@@ -1,11 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { StyleSheet, Text, View, Button, Image, TouchableOpacity, Dimensions } from 'react-native';
 
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { Animated, useSharedValue, useAnimatedStyle } from 'react-native-reanimated'; 
+import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 
 import { PanGestureHandler, State} from 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import {Gesture, GestureDetector, GestureHandlerRootView,} from 'react-native-gesture-handler';
+
+
 
 
 import { ImageBackground } from 'react-native-web';
@@ -18,45 +22,27 @@ const image = require('./assets/cat photo.jpeg');
 
 const Flashcard = ({ question, answer, onPress, isFlipped }) => {
 
-  const translationX = useSharedValue(0);
-  const translationY = useSharedValue(0);
+  
+
+  
 
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateX: translationX.value,
-        },
-        {
-          translateY: translationY.value,
-        },
-      ],
-    };
-  });
+  
 
-  const panGestureEvent = (event) => {
-    translationX.value = event.nativeEvent.translationX;
-    translationY.value = event.nativeEvent.translationY;
-  };
+  
 
   return (
-    <PanGestureHandler
-      onGestureEvent={panGestureEvent}
-      onHandlerStateChange={(event) => {}}
-    >
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <TouchableOpacity onPress={onPress}>
-          <Animated.View style={[animatedStyle]}>
-            {isFlipped ? (
-              <Text style={{ textAlign: 'center' }}>{answer}</Text>
-            ) : (
-              <Text style={{ textAlign: 'center' }}>{question}</Text>
-            )}
-          </Animated.View>
-        </TouchableOpacity>
-      </View>
-    </PanGestureHandler>
+    <View style={{ flex: 1 }}>
+      <TouchableOpacity onPress={onPress} style={styles.mainFlex}>
+        <View  >
+          {isFlipped ? (
+            <Text style={{ textAlign: "center" }}>{answer}</Text>
+          ) : (
+            <Text style={{ textAlign: "center" }}>{question}</Text>
+          )}
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 
   
@@ -87,8 +73,8 @@ const FlashcardScreen = () => {
   };
 
   return (
-    <View>
-      <Flashcard
+    <View style={styles.mainFlex}>
+      <Flashcard style={styles.mainFlex}
         question={flashcards[currentIndex].question}
         answer={flashcards[currentIndex].answer}
         onPress={handlePress}
@@ -108,7 +94,7 @@ export default function App() {
         </ImageBackground>
       </View>
 
-      <View style={{ flexDirection: 'row', backgroundColor: 'plum', borderRadius: 10, padding: 20, width: 400}}>
+      <View style={{ flexDirection: 'row', backgroundColor: 'plum', borderRadius: 10, padding: 20, width: 400, height: 400}}>
         <FlashcardScreen />
       </View>
 
@@ -121,3 +107,9 @@ export default function App() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  mainFlex: {
+    flex: 1,
+  },
+});
