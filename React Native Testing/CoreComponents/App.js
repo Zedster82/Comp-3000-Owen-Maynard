@@ -9,23 +9,14 @@ import { ImageBackground } from 'react-native-web';
 
 const image = require('./assets/cat photo.jpeg');
 
-
-
 function clamp(val, min, max) {
   return Math.min(Math.max(val, min), max);
 }
 
 const { width, height } = Dimensions.get('screen');
 
-
 const Flashcard = ({ question, answer, onPress, isFlipped }) => {
-
-  
-
-  
-
   return (
-
     <Animated.View style={{ flex: 1 }}>
       <TouchableOpacity onPress={onPress} style={styles.mainFlex}>
         <Animated.View  >
@@ -37,15 +28,10 @@ const Flashcard = ({ question, answer, onPress, isFlipped }) => {
         </Animated.View>
       </TouchableOpacity>
     </Animated.View>
-
   );
-
-  
 };
 
 const FlashcardScreen = ({ flashcards, currentIndex, isFlipped, handlePress }) => {
- 
-  
   return (
     <View style={styles.mainFlex}>
       <Flashcard
