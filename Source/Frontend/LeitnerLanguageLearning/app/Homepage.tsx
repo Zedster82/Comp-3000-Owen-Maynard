@@ -16,7 +16,16 @@ const Homepage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   
-
+  const flashcards = [
+    {
+      question: 'Question 1',
+      answer: 'Answer 1',
+    },
+    {
+      question: 'Question 2',
+      answer: 'Answer 2',
+    },
+  ];
   
 
   
@@ -50,16 +59,18 @@ const Homepage = () => {
     
 
   return (
-    <GestureHandlerRootView style={styles.cardContainer}>
-      <Animated.View style={[styles.cardContainer]}>
+    <Animated.View style={[styles.cardContainer, animatedStyles]}>
+      <GestureHandlerRootView style={styles.cardContainer}>
+
         <GestureDetector gesture={pan}>
-          <Animated.View style={[{ backgroundColor: 'plum', borderRadius: 10, width: '70%', height: '60%' }, animatedStyles,]}>
-            <FlashCard content={flashcards[0]} />
-            <FlashCard content={flashcards[1]} />
+          <Animated.View style={[{ backgroundColor: 'plum', borderRadius: 10, width: '70%', height: '60%'}, animatedStyles,]}>
+            {/* <FlashCard content={flashcards[0]} /> */}
+            {/* <FlashCard content={flashcards[1]} /> */}
           </Animated.View>
         </GestureDetector>
-      </Animated.View>
-    </GestureHandlerRootView>
+
+      </GestureHandlerRootView>
+    </Animated.View>
   )
 }
 
