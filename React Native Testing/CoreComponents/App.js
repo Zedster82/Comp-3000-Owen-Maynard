@@ -161,7 +161,7 @@ export default function App() {
       </View>
 
       <Animated.View>
-        <GestureHandlerRootView style={styles.container}>
+        <GestureHandlerRootView >
           <GestureDetector gesture={pan}>
             <Animated.View style={[{ flexDirection: 'row', backgroundColor: 'plum', borderRadius: 10, padding: 20, width: 400, height: 400 } , animatedStyles,]}>
             <FlashcardScreen
