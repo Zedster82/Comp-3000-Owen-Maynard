@@ -24,7 +24,7 @@
     "isolatedModules": true,
     "jsx": "react-native",
     "noEmit": true,
-    "types": []
+    "types": ["node"]
   },
   "include": [
     "**/*.ts",

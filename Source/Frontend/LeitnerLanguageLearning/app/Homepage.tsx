@@ -4,6 +4,7 @@ import FlashCard from '@/components/FlashCard'
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import {Gesture, GestureDetector, GestureHandlerRootView,} from 'react-native-gesture-handler';
 import { usePanGesture } from '@/hooks/usePanGesture';
+import ScreenWrapper from '@/components/ScreenWrapper';
 
 
 const Homepage = () => {
@@ -16,16 +17,10 @@ const Homepage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   
-  const flashcards = [
-    {
-      question: 'Question 1',
-      answer: 'Answer 1',
-    },
-    {
-      question: 'Question 2',
-      answer: 'Answer 2',
-    },
-  ];
+  const [flashcards, setFlashcards] = useState([
+    { question: "What is the capital of France?", answer: "Paris" },
+    { question: "What is 2 + 2?", answer: "4" }
+  ]);
   
 
   
@@ -48,29 +43,27 @@ const Homepage = () => {
     setIsFlipped(false);
   };
 
-  const { pan, animatedStyles, blockTap } = usePanGesture(handleSwipe);
+  const { pan, animatedStyles} = usePanGesture(handleSwipe);
 
   
-  const handlePress = () => {
-    if (!blockTap.current) {
-      setIsFlipped((prev) => !prev);
-    }
-  };
+  
     
 
   return (
-    <Animated.View style={[styles.cardContainer, animatedStyles]}>
-      <GestureHandlerRootView style={styles.cardContainer}>
-
-        <GestureDetector gesture={pan}>
-          <Animated.View style={[{ backgroundColor: 'plum', borderRadius: 10, width: '70%', height: '60%'}, animatedStyles,]}>
-            {/* <FlashCard content={flashcards[0]} /> */}
-            {/* <FlashCard content={flashcards[1]} /> */}
-          </Animated.View>
-        </GestureDetector>
-
-      </GestureHandlerRootView>
-    </Animated.View>
+    <ScreenWrapper style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Animated.View style={[styles.cardContainer,]}>
+        <GestureHandlerRootView style={styles.cardContainer}>
+          <GestureDetector gesture={pan}>
+            
+            <Animated.View style={[styles.handlerCard, animatedStyles]}>
+              {/* <FlashCard content={flashcards[0]} /> */}
+              {/* <FlashCard content={flashcards[1]} /> */}
+            </Animated.View>
+            
+          </GestureDetector>
+        </GestureHandlerRootView>
+      </Animated.View>
+    </ScreenWrapper>
   )
 }
 
@@ -83,5 +76,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
+  },
+  handlerCard:{
+    backgroundColor: 'plum',
+    borderRadius: 10,
+    width: '70%',
+    height: '60%',
+  },
+  fullDisplay:{
+    width: '100%',
+    height: '100%',
+  },
+  animatedTest:
+  {
+    transform: [{translateX: 0}, {translateY: 0}]
   }
+  
 })
