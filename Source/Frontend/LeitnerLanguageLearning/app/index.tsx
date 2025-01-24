@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import Typo from '@/components/Typo'
 import Button from '@/components/Button'
-import { scale } from '@/utils/styling'
+import { horizontalScale } from '@/utils/styling'
 import Animated, { FadeIn } from 'react-native-reanimated'
 
 const index = () => {

@@ -17,10 +17,10 @@ export const usePanGesture = (handleSwipe: (direction: string) => void) => {
   const isDragging = useRef(false);
   
 
-  const translationX = useSharedValue(0);
-  const translationY = useSharedValue(0);
-  const prevTranslationX = useSharedValue(0);
-  const prevTranslationY = useSharedValue(0);
+  const translationX = useSharedValue<number>(0);
+  const translationY = useSharedValue<number>(0);
+  const prevTranslationX = useSharedValue<number>(0);
+  const prevTranslationY = useSharedValue<number>(0);
 
   const animatedStyles = useAnimatedStyle(() => {
     // console.log("Animated Style Updated:", translationX.value, translationY.value); // Style debugging
@@ -33,6 +33,8 @@ export const usePanGesture = (handleSwipe: (direction: string) => void) => {
     //console.log("Animated Style Updated:", transformProperties); // Style debugging
     return transformProperties;
   });
+
+  
 
   const pan = Gesture.Pan()
     .minDistance(1)
@@ -59,7 +61,7 @@ export const usePanGesture = (handleSwipe: (direction: string) => void) => {
       }
       translationX.value = withSpring(0, SPRING_CONFIG);
       translationY.value = withSpring(0, SPRING_CONFIG);
-    });
+    }).runOnJS(true);
 
   return { pan, animatedStyles };
 };
