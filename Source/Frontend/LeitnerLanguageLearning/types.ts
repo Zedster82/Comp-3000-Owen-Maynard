@@ -158,3 +158,18 @@ export type WalletType = {
   uid?: string;
   created?: Date;
 };
+
+export type PlaylistType = {
+  title: string;
+  cardList?: string[]; // or any other type that describes the card list
+}
+
+export type ModalProps = {
+  visible?: boolean;
+  setVisible: (visible: boolean) => void;
+  children?: React.ReactNode;
+};
+
+export type ModalReturnProps = ModalProps & {
+  returnHandler: () => void;
+};

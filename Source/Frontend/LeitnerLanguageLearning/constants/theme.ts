@@ -1,16 +1,8 @@
-import { scale, verticalScale } from "@/utils/styling";
+import { horizontalScale, verticalScale } from "@/utils/styling";
 
 export const colors = {
-  primary: "#a3e635",
-  primaryLight: "#0ea5e9",
-  primaryDark: "#0369a1",
-  text: "#fff",
-  textLight: "#e5e5e5",
-  textLighter: "#d4d4d4",
   white: "#fff",
   black: "#000",
-  rose: "#ef4444",
-  green: "#16a34a",
   neutral50: "#fafafa",
   neutral100: "#f5f5f5",
   neutral200: "#e5e5e5",
@@ -24,22 +16,32 @@ export const colors = {
   neutral900: "#171717",
   main: "#092635",
   secondary: "#5C8374",
-  mainLight: "#123242"
+  mainLight: "#123242",
+  bgcolor: "#0c0d11",
+  maincolor: "#7ebab5",
+  caretcolor: "#7ebab5",
+  subcolor: "#454864",
+  subaltcolor: "#171a25",
+  textcolor: "#f6f5f5",
+  errorcolor: "#ff4754",
+  errorextracolor: "#b02a33",
+  colorfulerrorcolor: "#ff4754",
+  colorfulerrorextracolor: "#b02a33",
 
 };
 
 export const spacingX = {
-  _3: scale(3),
-  _5: scale(5),
-  _7: scale(7),
-  _10: scale(10),
-  _12: scale(12),
-  _15: scale(15),
-  _20: scale(20),
-  _25: scale(25),
-  _30: scale(30),
-  _35: scale(35),
-  _40: scale(40),
+  _3: horizontalScale(3),
+  _5: horizontalScale(5),
+  _7: horizontalScale(7),
+  _10: horizontalScale(10),
+  _12: horizontalScale(12),
+  _15: horizontalScale(15),
+  _20: horizontalScale(20),
+  _25: horizontalScale(25),
+  _30: horizontalScale(30),
+  _35: horizontalScale(35),
+  _40: horizontalScale(40),
 };
 
 export const spacingY = {

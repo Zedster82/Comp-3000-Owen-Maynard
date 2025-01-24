@@ -6,7 +6,7 @@ import { verticalScale } from '@/utils/styling'
 
 const Typo = ({
     size,
-    color = colors.text, 
+    color = colors.subcolor, 
     fontWeight = "400", 
     children, 
     style, 
@@ -18,7 +18,7 @@ const Typo = ({
             fontSize: size? verticalScale(size) : verticalScale(18),
             color: color,
             fontWeight: fontWeight,
-            fontFamily: bold ? 'Montserrat-Bold' : 'Montserrat-Regular'
+            fontFamily: bold ? 'Arial' : 'Arial'
         }
   return <Text style={[textStyle, style]} {...textProps}>{children}</Text>
 }
