@@ -5,6 +5,14 @@ import helmet from "helmet";
 import { flashCardRouter } from "./routes/flashCard";
 import { playlistsRouter } from "./routes/playlists";
 
+const swStats = require('swagger-stats');
+
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
+
+
 function buildApp(): express.Application {
     const app = express();
 
@@ -18,12 +26,15 @@ function buildApp(): express.Application {
     // app.use(contextMiddleware);
 
     // Routes
-    app.use("/auth", flashCardRouter);
-    app.use("/workouts", playlistsRouter);
+    app.use("/flashcards", flashCardRouter);
+    app.use("/playlists", playlistsRouter);
 
     //addApiRoutes(app);
 
     //app.use(errorHandlingMiddleware);
+
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    app.use(swStats.getMiddleware({swaggerSpec:swaggerDocument}));
 
     return app;
 }

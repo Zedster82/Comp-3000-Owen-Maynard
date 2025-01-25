@@ -24,18 +24,23 @@ if (!mongoUrl) {
 }
 
 
-mongoose
-    .connect(mongoUrl)
-    .then(() => {
-        console.log("Connected to MongoDB Server successfully.");
+// mongoose
+//     .connect(mongoUrl)
+//     .then(() => {
+//         console.log("Connected to MongoDB Server successfully.");
         
-        app.listen(PORT, () => {
-            console.log(`Server running on http://localhost:${PORT}`);
-        });
-    })
-    .catch((err) => {
-        console.error("Error connecting to MongoDB:", err.message);
-        process.exit(1); // Exit the process if DB connection fails
+//         app.listen(PORT, () => {
+//             console.log(`Server running on http://localhost:${PORT}`);
+//         });
+//     })
+//     .catch((err) => {
+//         console.error("Error connecting to MongoDB:", err.message);
+//         process.exit(1); // Exit the process if DB connection fails
+//     });
+
+
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
     });
 
 
