@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export const flashcardSchema = new mongoose.Schema({
+const flashcardSchema = new mongoose.Schema({
     userID: {
         type: String,
     },
@@ -25,4 +25,6 @@ export const flashcardSchema = new mongoose.Schema({
         default: 1
     }
 });
+
+export const Flashcard = mongoose.model('Flashcard', flashcardSchema);
 

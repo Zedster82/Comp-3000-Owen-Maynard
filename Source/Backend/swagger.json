@@ -32,6 +32,9 @@
           "200": {
             "description": "Server is running"
           },
+          "403": {
+            "description": "Forbidden"
+          },
           "500": {
             "description": "Internal server error"
           }
@@ -49,7 +52,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Playlist"
+              "$ref": "#/definitions/PlaylistCreateRequest"
             }
           }
         ],
@@ -59,6 +62,9 @@
           },
           "400": {
             "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "409": {
             "description": "Playlist already exists"
@@ -94,6 +100,9 @@
           "201": {
             "description": "Playlist updated"
           },
+          "403": {
+            "description": "Forbidden"
+          },
           "500": {
             "description": "Internal server error"
           }
@@ -114,6 +123,9 @@
         "responses": {
           "200": {
             "description": "Playlist deleted"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Internal server error"
@@ -142,6 +154,9 @@
               }
             }
           },
+          "403": {
+            "description": "Forbidden"
+          },
           "500": {
             "description": "Internal server error"
           }
@@ -167,6 +182,9 @@
           "200": {
             "description": "Flashcard created"
           },
+          "403": {
+            "description": "Forbidden"
+          },
           "500": {
             "description": "Internal server error"
           }
@@ -185,6 +203,9 @@
                 "$ref": "#/definitions/Flashcard"
               }
             }
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Internal server error"
@@ -217,6 +238,9 @@
           "201": {
             "description": "Flashcard updated"
           },
+          "403": {
+            "description": "Forbidden"
+          },
           "500": {
             "description": "Internal server error"
           }
@@ -237,6 +261,9 @@
         "responses": {
           "200": {
             "description": "Flashcard deleted"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Internal server error"
@@ -266,6 +293,9 @@
                 "$ref": "#/definitions/Flashcard"
               }
             }
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Internal server error"
@@ -318,6 +348,31 @@
         },
         "priority": {
           "type": "number"
+        }
+      }
+    },
+    "PlaylistCreateRequest": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "cardList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "string"
+              },
+              "answer": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     }

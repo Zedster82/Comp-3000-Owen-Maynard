@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
-import { flashcardSchema } from './flashcards';
-
-
+import { Flashcard } from './flashcards';
 
 export const playlistsSchema = new mongoose.Schema({
     user: {
@@ -12,8 +10,7 @@ export const playlistsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    cardList: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Flashcard'
-    }]
+    cardList: [Flashcard]
 });
+
+export const Playlist = mongoose.model('Playlist', playlistsSchema);
