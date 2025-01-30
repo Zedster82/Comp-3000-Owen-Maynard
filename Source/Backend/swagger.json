@@ -33,7 +33,7 @@
             "description": "Server is running"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden + response "
           },
           "500": {
             "description": "Internal server error"
@@ -52,7 +52,17 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/PlaylistCreateRequest"
+              "$ref": "#/definitions/PlaylistBaseObject"
+            },
+            "example": {
+              "user": "exampleUser",
+              "title": "Example Playlist",
+              "cardList": [
+                {
+                  "question": "What is the capital of France?",
+                  "answer": "Paris"
+                }
+              ]
             }
           }
         ],
@@ -60,14 +70,14 @@
           "200": {
             "description": "Playlist created"
           },
+          "201": {
+            "description": "Resource created"
+          },
           "400": {
-            "description": "Invalid input"
+            "description": "Invalid input or validation error"
           },
           "403": {
             "description": "Forbidden"
-          },
-          "409": {
-            "description": "Playlist already exists"
           },
           "500": {
             "description": "Internal server error"
@@ -76,32 +86,46 @@
       }
     },
     "/playlists/{id}": {
-      "put": {
+      "patch": {
         "tags": ["Playlists"],
         "summary": "Edit playlist",
-        "description": "Edit an existing playlist",
+        "description": "Update playlist title",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Playlist"
+              "$ref": "#/definitions/PlaylistBaseObject"
+            },
+            "example": {
+              "user": "owenhr",
+              "title": "Chinese Characters",
+              "cardList": [
+                {
+                  "question": "What is the character for 'you' in Chinese?",
+                  "answer": "你"
+                },
+                {
+                  "question": "你",
+                  "answer": "you"
+                }
+              ]
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Playlist updated"
+          "200": {
+            "description": "Playlist title updated"
+          },
+          "400": {
+            "description": "Invalid input"
           },
           "403": {
             "description": "Forbidden"
+          },
+          "404": {
+            "description": "Resource not found"
           },
           "500": {
             "description": "Internal server error"
@@ -124,8 +148,11 @@
           "200": {
             "description": "Playlist deleted"
           },
+          "400": {
+            "description": "Validation error (e.g. invalid ID)"
+          },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden + response "
           },
           "500": {
             "description": "Internal server error"
@@ -155,7 +182,53 @@
             }
           },
           "403": {
+            "description": "Forbidden + response "
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/playlists/{id}/cardList": {
+      "patch": {
+        "tags": ["Playlists"],
+        "summary": "Edit cardList",
+        "description": "Add or remove cards from the playlist",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlaylistCardListObject"
+            },
+            "example": {
+              "cardList": [
+                {
+                  "question": "What is the character for 'you' in Chinese?",
+                  "answer": "你"
+                },
+                {
+                  "question": "你",
+                  "answer": "you"
+                }
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CardList updated"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
             "description": "Forbidden"
+          },
+          "404": {
+            "description": "Resource not found"
           },
           "500": {
             "description": "Internal server error"
@@ -175,6 +248,11 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/Flashcard"
+            },
+            "example": {
+              "userID": "owenhr",
+              "question": "What is the character for 'you' in Chinese?",
+              "answer": "你"
             }
           }
         ],
@@ -182,8 +260,14 @@
           "200": {
             "description": "Flashcard created"
           },
+          "201": {
+            "description": "Resource created"
+          },
+          "400": {
+            "description": "Invalid input or validation error (question/answer too long)"
+          },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden + response "
           },
           "500": {
             "description": "Internal server error"
@@ -205,7 +289,7 @@
             }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden + response "
           },
           "500": {
             "description": "Internal server error"
@@ -214,7 +298,7 @@
       }
     },
     "/flashcards/{id}": {
-      "put": {
+      "patch": {
         "tags": ["Flashcards"],
         "summary": "Edit flashcard",
         "description": "Edit an existing flashcard",
@@ -230,7 +314,19 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Flashcard"
+              "type": "object",
+              "properties": {
+                "question": {
+                  "type": "string"
+                },
+                "answer": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "question": "Edited question",
+              "answer": "Edited answer"
             }
           }
         ],
@@ -238,8 +334,14 @@
           "201": {
             "description": "Flashcard updated"
           },
+          "400": {
+            "description": "Invalid input or validation error"
+          },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden + response "
+          },
+          "404": {
+            "description": "Resource not found"
           },
           "500": {
             "description": "Internal server error"
@@ -263,7 +365,7 @@
             "description": "Flashcard deleted"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden + response "
           },
           "500": {
             "description": "Internal server error"
@@ -295,7 +397,101 @@
             }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden + response "
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/flashcards/updateCount/{id}": {
+      "patch": {
+        "tags": ["Flashcards"],
+        "summary": "Update flashcard count",
+        "description": "Update either failCount or correctCount for a specific flashcard, sending a boolean value for each if they are to be incremented",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "failCount": {
+                  "type": "number"
+                },
+                "correctCount": {
+                  "type": "number"
+                }
+              },
+              "example": {
+                "failCount": true,
+                "correctCount": false
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flashcard count updated"
+          },
+          "403": {
+            "description": "Forbidden + response "
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/flashcards/updatePriority/{id}": {
+      "patch": {
+        "tags": ["Flashcards"],
+        "summary": "Update flashcard priority",
+        "description": "Update the priority value of a specific flashcard.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "priority": {
+                  "type": "number"
+                }
+              },
+              "example": {
+                "priority": 2
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Priority updated"
+          },
+          "403": {
+            "description": "Forbidden + response "
+          },
+          "404": {
+            "description": "Resource not found"
           },
           "500": {
             "description": "Internal server error"
@@ -312,10 +508,12 @@
           "type": "string"
         },
         "user": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 50
         },
         "title": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
         "cardList": {
           "type": "array",
@@ -332,13 +530,16 @@
           "type": "string"
         },
         "userID": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 50
         },
         "question": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 200
         },
         "answer": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 200
         },
         "correctCount": {
           "type": "number"
@@ -351,15 +552,38 @@
         }
       }
     },
-    "PlaylistCreateRequest": {
+    "PlaylistBaseObject": {
       "type": "object",
+      
       "properties": {
         "user": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 50
         },
         "title": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
+        "cardList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "string"
+              },
+              "answer": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "PlaylistCardListObject": {
+      "type": "object",
+      
+      "properties": {
         "cardList": {
           "type": "array",
           "items": {
@@ -378,4 +602,3 @@
     }
   }
 }
-
