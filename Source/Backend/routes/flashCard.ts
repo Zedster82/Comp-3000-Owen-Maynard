@@ -19,6 +19,7 @@ getFlashCardByPlaylistIdFunctions,
 updateFlashCardCountFunctions,
 updateFlashCardPriorityFunctions
 } from "./flashCardFunctions";
+import { Flashcard } from "../models/flashcards";
 //const { body, validationResult } = require("express-validator");
 
 
@@ -34,12 +35,29 @@ export const flashCardRouter = () => {
         try {
             // Convert req.body to flashcard data
             // Check if flashcard already exists
+            const flashcardData = req.body;
+            const existingFlashcard = await Flashcard.findOne({ question: flashcardData.question, userId: req.user.id });
+            if (existingFlashcard) {
+                return res.status(400).json({ message: "Flashcard already exists" });
+            }
+            flashcardData.userId = req.user.id;
+            // Additional validation logic here
             // Ensure userID matches the authenticated user
             // Validate data (question/answer length, etc.)
             createFlashCardFunctions(req, res);
+
+
+            //Create the flashcard after checks
+            const newFlashcard = new Flashcard(flashcardData);
+            await newFlashcard.save();
+            
+
             // Return 200 or 201 on success
+            return res.status(201).json({ message: "Flashcard created successfully" });
+            
         } catch (error) {
             // Return 500 on error
+            return res.status(500).json({ message: "Internal server error" });
         }
     });
 
