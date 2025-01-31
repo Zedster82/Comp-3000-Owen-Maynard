@@ -1,0 +1,80 @@
+[
+  {
+    "story": "As a user, I want to create a new flashcard so I can store language questions and answers."
+  },
+  {
+    "story": "As a user, I want to delete an existing flashcard so I can remove outdated content."
+  },
+  {
+    "story": "As a user, I want to edit a flashcard’s question or answer so I can fix mistakes quickly."
+  },
+  {
+    "story": "As a user, I want to search for flashcards by keyword so I can locate specific information."
+  },
+  {
+    "story": "As a user, I want to create a playlist so I can group related flashcards for study sessions."
+  },
+  {
+    "story": "As a user, I want to edit my playlist title so I can keep my study materials organized."
+  },
+  {
+    "story": "As a user, I want to add a flashcard to a playlist so I can track cards by category."
+  },
+  {
+    "story": "As a user, I want to remove a flashcard from a playlist so I can refine the set of cards."
+  },
+  {
+    "story": "As a user, I want to change the priority of a card so I can control how often it appears."
+  },
+  {
+    "story": "As a user, I want to view all of my playlists so I can quickly access any study group."
+  },
+  {
+    "story": "As a user, I want to mark a flashcard as 'learned' so I can track my learning progress."
+  },
+{
+    "story": "As a user, I want to mark a flashcard as 'unsure' to increase its priority."
+},
+  {
+    "story": "As a user, I want to practice flashcards in random order so I can test my recall accuracy."
+  },
+  {
+    "story": "As a user, I want to filter flashcards by difficulty so I can focus on my weak areas."
+  },
+  {
+    "story": "As a user, I want to schedule practice sessions so I can follow a regular learning routine."
+  },
+  {
+    "story": "As an admin, I want to review user statistics so I can improve future updates."
+  },
+  {
+    "story": "As a user, I want to track my performance history so I can measure progress over time."
+  },
+  {
+    "story": "As a user, I want to reset a playlist’s progress so I can revisit previously learned cards."
+  },
+  {
+    "story": "As a user, I want to set priorities on flashcards so I can focus on the most important ones."
+  },
+  {
+    "story": "As a user, I want to receive feedback after each flashcard attempt so I know how I did."
+  },
+  {
+    "story": "As a user, I want to see a summary report after a practice session so I can identify knowledge gaps."
+  },
+  {
+    "story": "As a user, I want to import flashcards from a file so I can quickly expand my collection."
+  },
+  {
+    "story": "As a user, I want to export my playlists so I can back up or share my study material."
+  },
+  {
+    "story": "As a user, I want to mark flashcards for spaced repetition so I can reinforce memory effectively."
+  },
+  {
+    "story": "As a user, I want to tag flashcards with custom labels so I can categorize specific topics."
+  },
+  {
+    "story": "As a user, I want to practice only cards marked as 'difficult' so I can focus where needed."
+  }
+]

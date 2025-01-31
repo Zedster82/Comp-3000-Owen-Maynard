@@ -1,16 +1,30 @@
 import mongoose from 'mongoose';
-import { Flashcard } from './flashcards';
 
-export const playlistsSchema = new mongoose.Schema({
-    user: {
+const playlistsSchema = new mongoose.Schema({
+    userID: {
+        type: String,
+    },
+    question: {
         type: String,
         required: true
     },
-    title: {
+    answer: {
         type: String,
         required: true
     },
-    cardList: [Flashcard]
+    correctCount: {
+        type: Number,
+        default: 0
+    },
+    failCount: {
+        type: Number,
+        default: 0
+    },
+    priority: {
+        type: Number,
+        default: 1
+    }
 });
 
 export const Playlist = mongoose.model('Playlist', playlistsSchema);
+

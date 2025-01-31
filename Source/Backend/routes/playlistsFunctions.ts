@@ -1,19 +1,21 @@
+
+
 // Create playlist
-export const createPlaylist = async (req, res) => {
-    // ...implementation...
+export const createPlaylistFunctions = async (req, res) => {
+    // ...existing code...
 }
 
 // Edit playlist
-export const editPlaylist = async (req, res) => {
-    // ...implementation...
+export const editPlaylistFunctions = async (req, res) => {
+    // ...existing code...
 }
 
 // Delete playlist
-export const deletePlaylist = async (req, res) => {
-    // ...implementation...
+export const deletePlaylistFunctions = async (req, res) => {
+    // ...existing code...
 }
 
-// Get all playlists of user
-export const getAllPlaylists = async (req, res) => {
-    // ...implementation...
+// Get all playlists
+export const getAllPlaylistsFunctions = async (req, res) => {
+    // ...existing code...
 }

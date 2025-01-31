@@ -19,3 +19,13 @@ export const getAllFlashCardFunctions = async (req, res) => {
 export const getFlashCardByPlaylistIdFunctions = async (req, res) => {
 
 }
+
+//Update flashcard priority
+export const updateFlashCardPriorityFunctions = async (req, res) => {
+
+}
+
+//Update flashcard count
+export const updateFlashCardCountFunctions = async (req, res) => {
+
+}
