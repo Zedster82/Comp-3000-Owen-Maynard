@@ -43,7 +43,9 @@
     },
     "/playlists": {
       "post": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Create playlist",
         "description": "Create a new playlist",
         "parameters": [
@@ -88,7 +90,9 @@
     },
     "/playlists/{id}": {
       "patch": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Edit playlist",
         "description": "Update playlist title",
         "parameters": [
@@ -135,7 +139,9 @@
         }
       },
       "delete": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Delete playlist",
         "description": "Delete an existing playlist",
         "parameters": [
@@ -160,14 +166,116 @@
             "description": "Internal server error"
           }
         }
+      }
+    },
+    "/playlists/{id}/edit": {
+      "post": {
+        "tags": [
+          "Playlists"
+        ],
+        "summary": "Add a flashcard to a playlist",
+        "description": "Add a flashcard to a specific playlist",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "flashcardId": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "flashcardId": "123456789"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flashcard added to playlist"
+          },
+          "400": {
+            "description": "Invalid input or validation error"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Playlist or flashcard not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
       },
+      "delete": {
+        "tags": [
+          "Playlists"
+        ],
+        "summary": "Remove a flashcard from a playlist",
+        "description": "Remove a flashcard from a specific playlist",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "flashcardId": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "flashcardId": "123456789"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flashcard removed from playlist"
+          },
+          "400": {
+            "description": "Invalid input or validation error"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Playlist or flashcard not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/playlist/{userID}": {
       "get": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Get all playlists of user",
         "description": "Get all playlists of a user",
         "parameters": [
           {
-            "name": "id",
+            "name": "userID",
             "in": "path",
             "required": true,
             "type": "string"
@@ -192,55 +300,11 @@
         }
       }
     },
-    "/playlists/{id}/cardList": {
-      "patch": {
-        "tags": ["Playlists"],
-        "summary": "Edit cardList",
-        "description": "Add or remove cards from the playlist",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/PlaylistCardListObject"
-            },
-            "example": {
-              "cardList": [
-                {
-                  "question": "What is the character for 'you' in Chinese?",
-                  "answer": "你"
-                },
-                {
-                  "question": "你",
-                  "answer": "you"
-                }
-              ]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "CardList updated"
-          },
-          "400": {
-            "description": "Invalid input"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Resource not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
     "/flashcards": {
       "post": {
-        "tags": ["Flashcards"],
+        "tags": [
+          "Flashcards"
+        ],
         "summary": "Create flashcard",
         "description": "Create a new flashcard",
         "parameters": [
@@ -276,33 +340,13 @@
             "description": "Internal server error"
           }
         }
-      },
-      "get": {
-        "tags": ["Flashcards"],
-        "summary": "Get all flashcards of user",
-        "description": "Get all flashcards of a user",
-        "responses": {
-          "200": {
-            "description": "List of flashcards",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Flashcard"
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden + response "
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
       }
     },
     "/flashcards/{id}": {
       "patch": {
-        "tags": ["Flashcards"],
+        "tags": [
+          "Flashcards"
+        ],
         "summary": "Edit flashcard",
         "description": "Edit an existing flashcard",
         "parameters": [
@@ -352,7 +396,9 @@
         }
       },
       "delete": {
-        "tags": ["Flashcards"],
+        "tags": [
+          "Flashcards"
+        ],
         "summary": "Delete flashcard",
         "description": "Delete an existing flashcard",
         "parameters": [
@@ -374,11 +420,45 @@
             "description": "Internal server error"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Flashcards"
+        ],
+        "summary": "Get all flashcards of user",
+        "description": "Get all flashcards of a user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of flashcards",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Flashcard"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden + response "
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
       }
     },
     "/flashcards/playlist/{id}": {
       "get": {
-        "tags": ["Flashcards"],
+        "tags": [
+          "Flashcards"
+        ],
         "summary": "Get flashcards by playlist id",
         "description": "Get all flashcards of a specific playlist",
         "parameters": [
@@ -410,7 +490,9 @@
     },
     "/flashcards/updateCount/{id}": {
       "patch": {
-        "tags": ["Flashcards"],
+        "tags": [
+          "Flashcards"
+        ],
         "summary": "Update flashcard count",
         "description": "Update either failCount or correctCount for a specific flashcard, sending a boolean value for each if they are to be incremented",
         "parameters": [
@@ -459,7 +541,9 @@
     },
     "/flashcards/updatePriority/{id}": {
       "patch": {
-        "tags": ["Flashcards"],
+        "tags": [
+          "Flashcards"
+        ],
         "summary": "Update flashcard priority",
         "description": "Update the priority value of a specific flashcard.",
         "parameters": [
@@ -557,7 +641,6 @@
     },
     "PlaylistBaseObject": {
       "type": "object",
-      
       "properties": {
         "userID": {
           "type": "string",
@@ -585,7 +668,6 @@
     },
     "PlaylistCardListObject": {
       "type": "object",
-      
       "properties": {
         "cardList": {
           "type": "array",
