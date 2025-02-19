@@ -1,10 +1,27 @@
 //Create flashcard
 
-export const createFlashCardFunctions = async (req, res) => {
+export const createFlashCardFunctions = async (req, res, existingFlashcard) => {
+    
+    if (existingFlashcard) {
+        return res.status(400).json({ message: "Flashcard already exists" });
+    }
 
+
+
+    return res.status(201).json({ message: "Flashcard created successfully" });
 }
 //Edit flashcard
-export const editFlashCardFunctions = async (req, res) => {
+export const editFlashCardFunctions = async (req, res, existingFlashcard) => {
+
+    if (!existingFlashcard) {
+        return res.status(404).json({ message: "Flashcard not found" });
+    }
+
+    if (existingFlashcard.userId.toString() !== req.user.id) {
+        return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    return res.status(200).json({ message: "Flashcard updated" });
 
 }
 //Delete flashcard

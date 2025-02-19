@@ -9,6 +9,9 @@ import Modal from '@/components/Modal'
 import { useModalView } from '@/hooks/useModalView'
 import AddPlaylist from '@/components/modals/AddPlaylist'
 import { colors } from '@/constants/theme'
+import Playlist from '@/components/Playlist'
+import { useMutation, useQueryClient } from 'react-query';
+import axios from 'axios';
 
 const Playlists = () => {
 
@@ -20,13 +23,16 @@ const Playlists = () => {
 
     const [playlist, setplaylist] = useState<PlaylistType[]>([])
 
-    const testPlaylist = [
-        { title: 'Chinese', cardID: 1 },
-        { title: 'Chinese Characters', cardID: 2 },
-        { title: 'Playlist 3', cardID: 3 },
-    ]
+    
 
     useEffect(() => {
+        const testPlaylist: PlaylistType[] = [
+            { title: 'Chinese', user: 'testuser', cardList: ["1"] },
+            { title: 'Chinese Characters', user: 'testuser', cardList: ["2"] },
+            { title: 'Playlist 3', user: 'testuser', cardList: ["3","2","36"] },
+        ]
+
+
         setplaylist(testPlaylist)
         
         
@@ -38,11 +44,17 @@ const Playlists = () => {
         { ID: 2, title: "Chinese Characters" },
     ]
 
-    const  addNewPlaylist =  () => {
-        const newPlaylist: PlaylistType = { title: 'New Playlist', cardList: ["1"] }
+    const addNewPlaylist =  (playlistName: string, description: String, cards: string[]) => {
+        //Send post request to server to add a new playlist
+
+        //On success, add the new playlist to the list
+        const newPlaylist: PlaylistType = { title: playlistName, user: "testUser", cardList: cards }
         setplaylist([...playlist, newPlaylist])
-        console.log('Add New Playlist')
-        //Add a new playlist to the list
+        
+        
+
+        //Hide the modal
+        setModalVisible(false)
     }
 
     const openModal = () => { 
@@ -65,12 +77,9 @@ const Playlists = () => {
                 </View>
                 {/* Body */}
                 <View style={{ flex: 0.9 }}>
-                    <ScrollView style={{ flex: 1 }}>
+                    <ScrollView style={{ flex: 1 , backgroundColor: colors.neutral800}}>
                         {playlist.map((playlistItem, index) => (
-                            <View key={index} style={[{ flexDirection: 'column',  height: 50 }, styles.testBorder]}>
-                                <Typo size={12}>{playlistItem.title}</Typo>
-                                <View style={[{flex: 1, height: horizontalScale(1)}, styles.testBorder]}/>
-                            </View>
+                            <Playlist key={index} playlistItem={playlistItem} index={index}></Playlist>
                         ))}
                     </ScrollView>
                 </View>
@@ -90,8 +99,8 @@ const styles = StyleSheet.create({
     },
     testBorder: {
         
-        borderColor: 'black',
-        borderBottomWidth: horizontalScale(1),
+        // borderColor: 'black',
+        // borderBottomWidth: horizontalScale(1),
 
     }
 })

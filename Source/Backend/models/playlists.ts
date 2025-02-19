@@ -1,28 +1,25 @@
+import { kMaxLength } from 'buffer';
 import mongoose from 'mongoose';
 
 const playlistsSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        required: true
+    },
     userID: {
         type: String,
+        required: true,
+        maxlength: 50,
     },
-    question: {
+    playlistName: {
         type: String,
-        required: true
+        required: true,
+        maxlength: 50
     },
-    answer: {
-        type: String,
-        required: true
-    },
-    correctCount: {
-        type: Number,
-        default: 0
-    },
-    failCount: {
-        type: Number,
-        default: 0
-    },
-    priority: {
-        type: Number,
-        default: 1
+    cardList: {
+        type: Array,
+        required: true,
+        default: []
     }
 });
 

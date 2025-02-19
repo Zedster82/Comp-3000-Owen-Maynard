@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Input } from '@rneui/themed'
 import Button from '../Button'
 import { ModalProps, ModalReturnProps } from '@/types'
@@ -14,11 +14,15 @@ const AddPlaylist = (
   }: ModalReturnProps
 ) => {
 
-  const closeHandler = () => {
-    returnHandler()
-    setVisible(false)
-    console.log('Close Handler')
+  const [playlistName, setPlaylistName] = useState('')
+  const [description, setDescription] = useState('')
+  const [cards, setCards] = useState<string[]>([])
 
+  const handleAddPlaylist = () => {
+    
+    returnHandler(playlistName, description, cards)
+
+    
   }
 
 
@@ -26,12 +30,27 @@ const AddPlaylist = (
   return (
 
 
-    <View style={[styles.container, ]}>
+    <View style={[styles.container]}>
       <Typo color={colors.main}>Add Playlist</Typo>
-      <Input placeholder="Enter Playlist Name" />
-      <Input placeholder="Enter Description" />
-      <Input placeholder="Add Cards" />
-      <Button onPress={() => { closeHandler }}><Typo>Add Playlist</Typo></Button>
+      <Input
+        style={styles.mainColour}
+        placeholder="Enter Playlist Name"
+        value={playlistName}
+        onChangeText={(text) => setPlaylistName(text)}
+      />
+      <Input
+        placeholder="Enter Description"
+        value={description}
+        onChangeText={(text) => setDescription(text)}
+      />
+      <Input
+        placeholder="Add Cards"
+        
+        onChangeText={(text) => setCards(cards.concat(text))}
+      />
+      <Button onPress={handleAddPlaylist}>
+        <Typo>Add Playlist</Typo>
+      </Button>
     </View>
   )
 }
@@ -44,5 +63,8 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  mainColour: {
+    color: colors.main
   }
 })

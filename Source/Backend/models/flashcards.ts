@@ -5,6 +5,11 @@ const flashcardSchema = new mongoose.Schema({
         type: String,
         maxlength: 50
     },
+    _id: {
+        type: String,
+        required: true,
+        maxlength: 50
+    },
     question: {
         type: String,
         required: true,
