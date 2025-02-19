@@ -37,14 +37,12 @@ export const flashCardRouter = () => {
             // Check if flashcard already exists
             const flashcardData = req.body;
             const existingFlashcard = await Flashcard.findOne({ question: flashcardData.question, userId: req.user.id });
-            if (existingFlashcard) {
-                return res.status(400).json({ message: "Flashcard already exists" });
-            }
+            
             flashcardData.userId = req.user.id;
             // Additional validation logic here
             // Ensure userID matches the authenticated user
             // Validate data (question/answer length, etc.)
-            createFlashCardFunctions(req, res);
+            let result = createFlashCardFunctions(req, res, existingFlashcard);
 
 
             //Create the flashcard after checks
@@ -64,14 +62,25 @@ export const flashCardRouter = () => {
     //Edit flashcard (use PATCH instead of PUT)
     router.patch("/:id", verifyRequest, async (req, res) => {
         try {
-            // Parse flashcard id
+            const flashcardId = req.body.id;
+            const flashcardData = req.body;
+
             // Check if flashcard with this id exists
+            const existingFlashcard = await Flashcard.findById(flashcardId);
             // Validate user ownership
-            editFlashCardFunctions(req, res);
+            let result = editFlashCardFunctions(req, res, existingFlashcard);
+            
+            
+
             // Update flashcard in DB
-            // Return 201 on success
+            Flashcard.findOneAndUpdate(flashcardId, flashcardData);
+            
+
+            // Return 200 on success
+            return result;
         } catch (error) {
             // Return 500 on error
+            return res.status(500).json({ message: "Internal server error" });
         }
     });
 
