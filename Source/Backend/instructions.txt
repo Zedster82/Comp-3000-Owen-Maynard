@@ -1,0 +1,46 @@
+Instructions for Separating Functionality into Server and Validation Sections:
+
+1. **Server Section:**
+    - This section will handle all interactions with the database.
+    - It will include functions for:
+      - Retrieving data from the database.
+      - Writing data to the database.
+    - Example functions:
+      - `getDataFromDatabase()`
+      - `writeDataToDatabase()`
+
+2. **Validation Section:**
+    - This section will handle all data validation.
+    - It will include functions for:
+      - Validating data returned from the server.
+      - Validating data sent by the user.
+    - Example functions:
+      - `validateServerData(data)`
+      - `validateUserData(data)`
+
+3. **Unit Testing:**
+    - By separating the validation functions from the server functions, you can unit test the validation functions independently.
+    - Create test cases for each validation function to ensure they work correctly with various inputs.
+
+4. **File Structure:**
+    - Organize your code into separate files for clarity and maintainability.
+    - Example file structure:
+      ```
+      /Source/Backend/
+         ├── server/
+         │   ├── database.js
+         │   └── server.js
+         ├── validation/
+         │   ├── validateServerData.js
+         │   └── validateUserData.js
+         └── tests/
+              ├── validateServerData.test.js
+              └── validateUserData.test.js
+      ```
+
+5. **Implementation:**
+    - In the `server` directory, implement the functions for database interactions.
+    - In the `validation` directory, implement the functions for data validation.
+    - In the `tests` directory, implement the unit tests for the validation functions.
+
+By following these instructions, you will be able to separate the server and validation functionalities, making your code more modular and easier to test.
