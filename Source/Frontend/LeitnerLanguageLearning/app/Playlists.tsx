@@ -27,9 +27,9 @@ const Playlists = () => {
 
     useEffect(() => {
         const testPlaylist: PlaylistType[] = [
-            { title: 'Chinese', user: 'testuser', cardList: ["1"] },
-            { title: 'Chinese Characters', user: 'testuser', cardList: ["2"] },
-            { title: 'Playlist 3', user: 'testuser', cardList: ["3","2","36"] },
+            { _id:"testsgfd", title: 'Chinese', user: 'testuser', cardList: ["1"] },
+            { _id:"testsgfd", title: 'Chinese Characters', user: 'testuser', cardList: ["2"] },
+            { _id:"testsgfd", title: 'Playlist 3', user: 'testuser', cardList: ["3","2","36"] },
         ]
 
 
@@ -47,8 +47,8 @@ const Playlists = () => {
     const addNewPlaylist =  (playlistName: string, description: String, cards: string[]) => {
         //Send post request to server to add a new playlist
 
-        //On success, add the new playlist to the list
-        const newPlaylist: PlaylistType = { title: playlistName, user: "testUser", cardList: cards }
+        //On success, get the playlist from the server and add it to the playlist state
+        const newPlaylist: PlaylistType = { _id:"testsgfd", title: playlistName, user: "testUser", cardList: cards }
         setplaylist([...playlist, newPlaylist])
         
         
@@ -79,7 +79,7 @@ const Playlists = () => {
                 <View style={{ flex: 0.9 }}>
                     <ScrollView style={{ flex: 1 , backgroundColor: colors.neutral800}}>
                         {playlist.map((playlistItem, index) => (
-                            <Playlist key={index} playlistItem={playlistItem} index={index}></Playlist>
+                            <Playlist key={index} playlistItem={playlistItem} id={playlistItem._id}></Playlist>
                         ))}
                     </ScrollView>
                 </View>

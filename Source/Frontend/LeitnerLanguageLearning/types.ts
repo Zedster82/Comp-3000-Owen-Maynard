@@ -160,7 +160,7 @@ export type WalletType = {
 };
 
 export type PlaylistType = {
-  _id?: string;
+  _id: string;
   title: string;
   user: string;
   cardList?: string[]; // or any other type that describes the card list
@@ -179,5 +179,4 @@ export type ModalReturnProps = ModalProps & {
 export type PlaylistProps = {
   id: string;
   playlistItem: PlaylistType;
-  index: number;
 };
