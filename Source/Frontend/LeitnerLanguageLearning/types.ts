@@ -177,7 +177,6 @@ export type ModalReturnProps = ModalProps & {
 };
 
 export type PlaylistProps = {
-  id: string;
+  id: number;
   playlistItem: PlaylistType;
-  index: number;
 };

@@ -11,19 +11,14 @@ import AddPlaylist from '@/components/modals/AddPlaylist'
 import { colors } from '@/constants/theme'
 import Playlist from '@/components/Playlist'
 import { useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
+// import axios from 'axios';
 
 const Playlists = () => {
 
-    
-
-
     const {modalContent, setModalContent, modalVisible, setModalVisible} = useModalView()
-    
 
     const [playlist, setplaylist] = useState<PlaylistType[]>([])
 
-    
 
     useEffect(() => {
         const testPlaylist: PlaylistType[] = [
@@ -32,17 +27,12 @@ const Playlists = () => {
             { title: 'Playlist 3', user: 'testuser', cardList: ["3","2","36"] },
         ]
 
-
         setplaylist(testPlaylist)
-        
         
     }, [])
  
 
-    const cards = [
-        { ID: 1, title: "Chinese" },
-        { ID: 2, title: "Chinese Characters" },
-    ]
+    
 
     const addNewPlaylist =  (playlistName: string, description: String, cards: string[]) => {
         //Send post request to server to add a new playlist
@@ -79,7 +69,7 @@ const Playlists = () => {
                 <View style={{ flex: 0.9 }}>
                     <ScrollView style={{ flex: 1 , backgroundColor: colors.neutral800}}>
                         {playlist.map((playlistItem, index) => (
-                            <Playlist key={index} playlistItem={playlistItem} index={index}></Playlist>
+                            <Playlist key={index} playlistItem={playlistItem} id={index}></Playlist>
                         ))}
                     </ScrollView>
                 </View>

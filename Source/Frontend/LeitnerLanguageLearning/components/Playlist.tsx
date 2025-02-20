@@ -9,7 +9,7 @@ import { router } from 'expo-router'
 
 const Playlist = ({
     playlistItem,
-    index
+    id
 }: PlaylistProps) => {
 
 
@@ -23,8 +23,8 @@ const Playlist = ({
 
 
     return (
-        <View key={index} style={[{ flexDirection: 'column', height: 'auto' }, styles.testBorder]}>
-            <TouchableOpacity onPress={() => router.push(`/playlists/[id]`)}>
+        <View key={id} style={[{ flexDirection: 'column', height: 'auto' }, styles.testBorder]}>
+            <TouchableOpacity onPress={() => router.push(`/playlists/${id}`)}>
                 <Typo size={12}>{playlistItem.title}</Typo>
             </TouchableOpacity>
             {/* <View style={[{ flex: 1, height: horizontalScale(1) }, styles.testBorder]} /> */}

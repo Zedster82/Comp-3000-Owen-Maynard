@@ -6,12 +6,12 @@ import { ThemeProvider, DarkTheme, DefaultTheme } from '@react-navigation/native
 import { Query, QueryClientProvider, useQueryClient } from 'react-query'
 
 const _layout = () => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const colorScheme = useColorScheme();
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      {/* <QueryClientProvider client={queryClient}> */}
+      <QueryClientProvider client={queryClient}>
         <Stack screenOptions={{ headerShown: false, }}>
           <Stack.Screen name="index" options={{headerShown: true,}}/>
 
@@ -20,7 +20,7 @@ const _layout = () => {
 
         </Stack>
       
-      {/* </QueryClientProvider> */}
+      </QueryClientProvider>
     </ThemeProvider>
   )
 }
