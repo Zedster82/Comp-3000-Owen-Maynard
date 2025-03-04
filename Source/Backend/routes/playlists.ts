@@ -11,9 +11,6 @@ import {
 } from "./playlistsFunctions"; // hypothetical import
 //const { body, validationResult } = require("express-validator");
 
-
-
-
 export const playlistsRouter = () => {
     const router = express.Router();
 
@@ -29,7 +26,7 @@ export const playlistsRouter = () => {
             // Create playlist in database
             // Return 200 or 201 on success
         } catch (error) {
-            // Return 500 on error
+            return res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -44,7 +41,7 @@ export const playlistsRouter = () => {
             editPlaylistFunctions(req, res);
             // Return 200 or 201 on success
         } catch (error) {
-            // Return 500 on error
+            return res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -58,7 +55,7 @@ export const playlistsRouter = () => {
             deletePlaylistFunctions(req, res);
             // Return 200 on success
         } catch (error) {
-            // Return 500 on error
+            return res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -70,7 +67,7 @@ export const playlistsRouter = () => {
             // Return them in response
             getAllPlaylistsFunctions(req, res);
         } catch (error) {
-            // Return 500 on error
+            return res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -84,7 +81,7 @@ export const playlistsRouter = () => {
             // Call function in "functions" file to handle updates
             // (Implement function if desired, e.g. editPlaylistCardListFunctions(req, res))
         } catch (error) {
-            // Return 500 on error
+            return res.status(500).json({ message: "Internal server error" });
         }
     });
 

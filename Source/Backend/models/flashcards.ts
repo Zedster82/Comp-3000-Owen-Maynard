@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
 const flashcardSchema = new mongoose.Schema({
-    userID: {
-        type: String,
-        maxlength: 50
-    },
     _id: {
         type: String,
         required: true,
+        maxlength: 50
+    },
+    userID: {
+        type: String,
         maxlength: 50
     },
     question: {
@@ -34,5 +34,5 @@ const flashcardSchema = new mongoose.Schema({
     }
 });
 
-export const Flashcard = mongoose.model('Flashcard', flashcardSchema);
+export const  Flashcard = mongoose.model('Flashcard', flashcardSchema);
 
