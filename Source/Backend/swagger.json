@@ -454,40 +454,6 @@
         }
       }
     },
-    "/flashcards/playlist/{id}": {
-      "get": {
-        "tags": [
-          "Flashcards"
-        ],
-        "summary": "Get flashcards by playlist id",
-        "description": "Get all flashcards of a specific playlist",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of flashcards",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Flashcard"
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden + response "
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
     "/flashcards/updateCount/{id}": {
       "patch": {
         "tags": [
