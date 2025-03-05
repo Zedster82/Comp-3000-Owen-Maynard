@@ -33,8 +33,10 @@ export const flashCardRouter = () => {
             const flashcardData = req.body;
             const existingFlashcard = await Flashcard.findOne({ question: flashcardData.question, userId: req.user.id });
             
-            flashcardData.userId = req.user.id;
-            // Additional validation logic here
+            
+
+            
+            
             // Ensure userID matches the authenticated user
             // Validate data (question/answer length, etc.)
             let result = createFlashCardFunctions(req, res, existingFlashcard);
@@ -56,6 +58,7 @@ export const flashCardRouter = () => {
     router.patch("/:_id", verifyRequest, async (req, res) => {
         try {
             const flashcardId = req.params._id;
+            idCheck(res, flashcardId);
             const flashcardData = req.body;
 
             // Check if flashcard with this id exists
@@ -79,6 +82,7 @@ export const flashCardRouter = () => {
         try {
             // Parse flashcard id
             const flashcardId = req.params._id;
+            idCheck(res, flashcardId);
             // Check if it exists
             const existingFlashcard = await Flashcard.findById(flashcardId);
             // Validate user ownership
@@ -98,6 +102,7 @@ export const flashCardRouter = () => {
         try {
             // Identify user from request
             const userID = req.params.userID;
+            
             // Fetch all flashcards for user
             const returnObjects = Flashcard.find({ userId: userID });
             //Checks
@@ -114,6 +119,7 @@ export const flashCardRouter = () => {
     router.patch("/updateCount/:_id", verifyRequest, async (req, res) => {
         try {
             const flashcardId = req.params._id;
+            idCheck(res, flashcardId);
 
             //Get current counts
             const flashcard = await Flashcard.findById(flashcardId);
@@ -148,6 +154,8 @@ export const flashCardRouter = () => {
         try {
             //Get id
             const flashcardId = req.params.id;
+            idCheck(res, flashcardId);
+
             const flashcard = await Flashcard.findById(flashcardId);
             const currentPriority = flashcard?.priority;
 
@@ -163,6 +171,14 @@ export const flashCardRouter = () => {
             return res.status(500).json({ message: "Internal server error" });
         }
     });
+
+
+    const idCheck = (res, flashcardId) => {
+        if (!mongoose.Types.ObjectId.isValid(flashcardId)) {
+            return res.status(400).json({ message: "Invalid ID format" });
+          }
+        
+    }
 
     return { router };
 }
