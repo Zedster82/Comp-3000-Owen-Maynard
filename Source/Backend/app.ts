@@ -1,17 +1,12 @@
 import express, { urlencoded, json } from "express";
 import cors from "cors";
 import helmet from "helmet";
-
 import { flashCardRouter } from "./routes/flashCard";
 import { playlistsRouter } from "./routes/playlists";
 
 const swStats = require('swagger-stats');
-
-
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-
-
 
 function buildApp(): express.Application {
     const app = express();

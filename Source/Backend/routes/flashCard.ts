@@ -31,7 +31,7 @@ export const flashCardRouter = () => {
             // Convert req.body to flashcard data
             // Check if flashcard already exists
             const flashcardData = req.body;
-            const existingFlashcard = await Flashcard.findOne({ question: flashcardData.question, userId: req.user.id });
+            const existingFlashcard = await Flashcard.findOne({ question: flashcardData.question, userID: req.body.userID });
             
             
 
@@ -67,7 +67,7 @@ export const flashCardRouter = () => {
             let result = editFlashCardFunctions(req, res, existingFlashcard);
             
             // Update flashcard in DB
-            Flashcard.findOneAndUpdate(flashcardId, flashcardData);
+            Flashcard.findOneAndUpdate({_id: flashcardId}, flashcardData);
             
             // Return 200 on success
             return result;
@@ -88,7 +88,7 @@ export const flashCardRouter = () => {
             // Validate user ownership
             let result = deleteFlashCardFunctions(req, res, existingFlashcard);
             // Delete from database
-            Flashcard.findOneAndDelete(flashcardId);
+            Flashcard.findOneAndDelete({_id: flashcardId});
             // Return 200 on success
             return result;
         } catch (error) {
@@ -132,14 +132,15 @@ export const flashCardRouter = () => {
             if (result.status == 400){
                 return result;
             }
+            
 
             if (flashcard?.correctCount)//if correctCount exists
             {
-                Flashcard.findOneAndUpdate(flashcardId, { correctCount: req.body.correctCount });
+                Flashcard.findOneAndUpdate({_id: flashcardId}, { correctCount: req.body.correctCount });
             }
             else //if failCount exists
             {
-                Flashcard.findOneAndUpdate(flashcardId, { failCount: req.body.failCount });
+                Flashcard.findOneAndUpdate({_id: flashcardId}, { failCount: req.body.failCount });
             }
             
             return result;
