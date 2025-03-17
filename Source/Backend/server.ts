@@ -29,7 +29,9 @@ mongoose
   });
 
 app.get('/', (req, res) => {
-    res.send('Server is running!');
+    res.status(200).send('Server is running!');
 });
+
+
 
 export default app;

@@ -7,12 +7,15 @@
     "helmet": "^8.0.0",
     "mongoose": "^8.9.5",
     "swagger-stats": "^0.99.7",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "vitest": "^3.0.8"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.9",
+    "@types/supertest": "^6.0.2",
     "nodemon": "^3.1.9",
+    "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   },
@@ -20,6 +23,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "ts-node server.ts",
-    "serve": "npm run build && npm start"
+    "serve": "npm run build && npm start",
+    "test": "vitest"
   }
 }

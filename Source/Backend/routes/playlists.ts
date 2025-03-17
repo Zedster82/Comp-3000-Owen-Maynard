@@ -30,13 +30,14 @@ export const playlistsRouter = () => {
 
             // Create the playlist after checks
             // Return 200 or 201 on success
-            if (result?.status === 201) {
+            if (result?.statusCode === 201) {
                 const newPlaylist = new Playlist(playlistData);
                 await newPlaylist.save();
             }
             return result;
             
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ message: "Internal server error" });
         }
     });
@@ -55,12 +56,13 @@ export const playlistsRouter = () => {
             const result = await editPlaylistFunctions(req, res, existingPlaylist);
             // Return 200 or 201 on success
 
-            if (result?.status === 200) {
+            if (result?.statusCode === 200) {
                 await Playlist.findByIdAndUpdate(playlistID, playlistData);
             }
 
             return result;
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ message: "Internal server error" });
         }
     });
@@ -76,13 +78,14 @@ export const playlistsRouter = () => {
             
             const result = await deletePlaylistFunctions(req, res, existingPlaylist);
             // Delete from database
-            if (result?.status === 200) {
+            if (result?.statusCode === 200) {
                 await Playlist.findByIdAndDelete(playlistID);
             }
             
             // Return 200 on success
             return result;
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ message: "Internal server error" });
         }
     });
@@ -100,41 +103,47 @@ export const playlistsRouter = () => {
             // Return them in response
             const response = await getAllPlaylistsFunctions(req, res, returnObjects);
 
+            if (response?.statusCode === 200) {
+                return response;
+            }
 
-            return response
+            //Unathorized
+            return res.status(401).json({ message: "Unauthorized" });
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ message: "Internal server error" });
         }
     });
 
     // Replace entire cardList
-router.put("/:id/cardList", verifyRequest, async (req, res) => {
-    try {
-        const playlistId = req.params.id;
-        const { cardList } = req.body;
-        
-        // Check if playlist exists
-        const existingPlaylist = await Playlist.findById(playlistId);
-        
+    router.put("/:id/cardList", verifyRequest, async (req, res) => {
+        try {
+            const playlistId = req.params.id;
+            const { cardList } = req.body;
+            
+            // Check if playlist exists
+            const existingPlaylist = await Playlist.findById(playlistId);
+            
 
-        const result = await replaceCardListFunctions(req, res, existingPlaylist);
-        
-        if(!existingPlaylist) {
-            return res.status(404).json({ message: "Playlist not found" });
-        }
-        
-        // Replace the entire cardList
-        if (result?.status === 200) {
-            existingPlaylist.cardList = cardList;
-            await existingPlaylist.save();
-        }
+            const result = await replaceCardListFunctions(req, res, existingPlaylist);
+            
+            if(!existingPlaylist) {
+                return res.status(404).json({ message: "Playlist not found" });
+            }
+            
+            // Replace the entire cardList
+            if (result?.statusCode === 200) {
+                existingPlaylist.cardList = cardList;
+                await existingPlaylist.save();
+            }
 
-        return result;
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Internal server error" });
-    }
-});
+            return result;
+        } catch (error) {
+            console.log(error);
+            console.error(error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+    });
 
     return { router };
 }

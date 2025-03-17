@@ -1,11 +1,6 @@
 import mongoose from 'mongoose';
 
 const flashcardSchema = new mongoose.Schema({
-    _id: {
-        type: String,
-        required: true,
-        maxlength: 50
-    },
     userID: {
         type: String,
         maxlength: 50

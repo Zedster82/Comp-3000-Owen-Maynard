@@ -2,10 +2,6 @@ import { kMaxLength } from 'buffer';
 import mongoose from 'mongoose';
 
 const playlistsSchema = new mongoose.Schema({
-    _id: {
-        type: String,
-        required: true
-    },
     userID: {
         type: String,
         required: true,

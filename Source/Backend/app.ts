@@ -21,10 +21,11 @@ function buildApp(): express.Application {
     // app.use(contextMiddleware);
 
     // Routes
-    app.use("/flashcards", flashCardRouter);
-    app.use("/playlists", playlistsRouter);
+    app.use("/api/flashcards", flashCardRouter().router);
+    app.use("/api/playlists", playlistsRouter().router);
+    console.log("Routes added");
 
-    //addApiRoutes(app);
+    
 
     //app.use(errorHandlingMiddleware);
 

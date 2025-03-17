@@ -1,21 +1,26 @@
 //Create flashcard
 
+import { response } from "express";
+
 export const createFlashCardFunctions = async (req, res, existingFlashcard) => {
     
     if (existingFlashcard) {
         return res.status(400).json({ message: "Flashcard already exists" });
     }
 
-    if (req.body.userId.toString() !== req.user.id) {
-        return res.status(403).json({ message: "Unauthorized" });
-    }
+    // if (req.body.userId !== req.user.id) {
+    //     return res.status(403).json({ message: "Unauthorized" });
+    // }
+    
+    console.log("Data: ")
+    console.log(req.body)
 
-    if (req.body.question.length > 200 || req.body.answer.length > 200) {
+    if (req.body.question > 200 || req.body.answer > 200) {
         return res.status(400).json({ message: "Question and answer must be less than 200 characters" });
     }
 
 
-
+    
     return res.status(201).json({ message: "Flashcard created successfully", flashcard: req.body });
 }
 //Edit flashcard
