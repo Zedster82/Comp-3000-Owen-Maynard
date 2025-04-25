@@ -5,6 +5,7 @@ import Button from '../Button'
 import { ModalProps, ModalReturnProps } from '@/types'
 import { colors } from '@/constants/theme'
 import Typo from '../Typo'
+import { horizontalScale } from '@/utils/styling'
 
 const AddPlaylist = (
   {
@@ -28,8 +29,6 @@ const AddPlaylist = (
 
 
   return (
-
-
     <View style={[styles.container]}>
       <Typo color={colors.main}>Add Playlist</Typo>
       <Input
@@ -43,12 +42,8 @@ const AddPlaylist = (
         value={description}
         onChangeText={(text) => setDescription(text)}
       />
-      <Input
-        placeholder="Add Cards"
-        
-        onChangeText={(text) => setCards(cards.concat(text))}
-      />
-      <Button onPress={handleAddPlaylist}>
+      {/* Card adding will be inside the playlist screen */}
+      <Button style={{height: 'auto', width: '80%'}} onPress={handleAddPlaylist}>
         <Typo>Add Playlist</Typo>
       </Button>
     </View>

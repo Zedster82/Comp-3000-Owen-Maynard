@@ -1,0 +1,45 @@
+# Leitner Language Learning - Spaced Repetition Flashcard System
+
+## Project Overview
+Leitner Language Learning is a comprehensive digital flashcard application designed around the proven Leitner system of spaced repetition learning. The system allows users to create, organize, and study flashcards with an evidence-based learning approach that optimizes memory retention.
+
+## The Leitner System
+Named after Sebastian Leitner, this methodology uses a series of boxes or categories to manage flashcards:
+- Correctly answered cards move to higher-level boxes (reviewed less frequently)
+- Incorrectly answered cards move back to the first box (reviewed more frequently)
+- This systematic approach ensures users spend more time studying difficult cards and less time on material they already know
+
+## Purpose
+The primary purpose of Leitner Language Learning is to provide an efficient and effective study tool that implements the Leitner system in a digital format. By tracking performance metrics and automatically adjusting card priorities based on user performance, the application helps users focus their study time on material they find most difficult.
+
+## Key Features
+- User authentication and personalized content management
+- Flashcard creation with question/answer pairs for language learning
+- Organization of flashcards into themed playlists
+- Performance tracking for each flashcard (correct/fail counts)
+- Leitner-based priority system that automatically adjusts review frequency
+- RESTful API architecture for flexible frontend integration
+
+## Technical Implementation
+The application is built with a modern web stack:
+- Backend: Node.js with Express framework
+- Database: MongoDB for document storage
+- Authentication: Secure token-based verification
+- API: RESTful endpoints for all flashcard and playlist operations
+
+## User Experience
+Users can:
+1. Create personal accounts to store their language learning materials
+2. Organize related flashcards into custom playlists
+3. Study with an interface that implements the Leitner system
+4. Track progress through performance metrics
+5. Manage their learning content with full CRUD operations
+
+## Target Audience
+Leitner Language Learning is designed primarily for language learners, but is also valuable for students, professionals, and lifelong learners who benefit from active recall and spaced repetition techniques. The application is particularly useful for:
+- Language acquisition and vocabulary building
+- Academic test preparation
+- Professional terminology learning
+- Knowledge retention in any field
+
+This project implements the proven Leitner system in a modern web application, creating an effective language learning tool that adapts to individual learning needs.

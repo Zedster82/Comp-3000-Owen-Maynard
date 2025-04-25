@@ -53,7 +53,7 @@ const Login = () => {
         {/* <Auth /> */}
         {/* <Typo>{session && session.user && <Text>{session.user.id}</Text>}</Typo> */}
 
-        <Button onPress={() => loginButton}>
+        <Button onPress={loginButton}>
           <Typo fontWeight={'400'}>Login</Typo>
         </Button>
         <Button onPress={() => router.push('/Playlists')}>

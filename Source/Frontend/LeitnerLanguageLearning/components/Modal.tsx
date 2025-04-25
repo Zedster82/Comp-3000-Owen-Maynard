@@ -23,7 +23,7 @@ const Modal = ({
                 {children}
             </View>
             <View style={[{flex: 1}, styles.container]}>
-                <Button onPress={() => {setVisible(false)}}> <Typo>Close</Typo></Button>
+                <Button style={{flex: 1}} onPress={() => {setVisible(false)}}> <Typo>Close</Typo></Button>
             </View>
         </View>
       

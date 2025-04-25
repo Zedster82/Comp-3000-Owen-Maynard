@@ -1,8 +1,11 @@
 import { StyleSheet, Text, useColorScheme, View } from 'react-native'
-
 import React from 'react'
-import { Stack } from 'expo-router'
+import { Tabs } from 'expo-router'
 import { ThemeProvider, DarkTheme, DefaultTheme } from '@react-navigation/native'
+import { Ionicons } from '@expo/vector-icons'
+
+import { Stack } from 'expo-router'
+
 import { Query, QueryClientProvider, useQueryClient } from 'react-query'
 
 const _layout = () => {
@@ -10,19 +13,69 @@ const _layout = () => {
 
   const colorScheme = useColorScheme();
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      {/* <QueryClientProvider client={queryClient}> */}
-        <Stack screenOptions={{ headerShown: false, }}>
-          <Stack.Screen name="index" options={{headerShown: true,}}/>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <Tabs
+        screenOptions={{
+          tabBarShowLabel: true,
+          tabBarButton: undefined,
+          tabBarActiveTintColor: colorScheme === "dark" ? "#FFFFFF" : "#0066CC",
+          tabBarInactiveTintColor:
+            colorScheme === "dark" ? "#888888" : "#888888",
+          tabBarStyle: {
+            backgroundColor: colorScheme === "dark" ? "#121212" : "#FFFFFF",
+          },
+        }}
+      >
+        <Tabs.Screen
+          name="Homepage"
+          options={{
+            title: "Home",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        {/* <Tabs.Screen
+          name="Homepage"
+          options={{
+            title: "Dashboard",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="stats-chart" size={size} color={color} />
+            ),
+          }}
+        /> */}
+        <Tabs.Screen
+          name="Playlists"
+          options={{
+            title: "Playlists",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="list" size={size} color={color} />
+            ),
+          }}
+        />
 
-          <Stack.Screen name="Homepage" options={{headerShown: true,}}/>
+        <Tabs.Screen
+          name="index" // or any other route
+          options={{
+            href: null, // This prevents it from showing in the tab bar
+          }}
+        />
 
-
-        </Stack>
-      
-      {/* </QueryClientProvider> */}
+        <Tabs.Screen
+          name="(auth)/Login" // or any other route
+          options={{
+            href: null, // This prevents it from showing in the tab bar
+          }}
+        />
+        <Tabs.Screen
+          name="(auth)/Register" // or any other route
+          options={{
+            href: null, // This prevents it from showing in the tab bar
+          }}
+        />
+      </Tabs>
     </ThemeProvider>
-  )
+  );
 }
 
 export default _layout

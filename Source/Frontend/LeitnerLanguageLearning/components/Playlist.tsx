@@ -37,10 +37,11 @@ export default Playlist
 const styles = StyleSheet.create({
 
     testBorder: {
-        marginVertical: horizontalScale(4),
-        borderRadius: 4,
-        borderWidth: horizontalScale(1),
-        borderColor: 'black',
+        // marginVertical: horizontalScale(4),
+        // borderRadius: 4,
+        // borderWidth: horizontalScale(1),
+        // borderColor: 'black',
+        paddingVertical: horizontalScale(4),
         // borderColor: 'black',
         // borderBottomWidth: horizontalScale(1),
 

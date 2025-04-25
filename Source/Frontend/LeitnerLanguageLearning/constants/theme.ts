@@ -1,4 +1,5 @@
 import { horizontalScale, verticalScale } from "@/utils/styling";
+import { text } from "stream/consumers";
 
 export const colors = {
   white: "#fff",
@@ -27,7 +28,7 @@ export const colors = {
   errorextracolor: "#b02a33",
   colorfulerrorcolor: "#ff4754",
   colorfulerrorextracolor: "#b02a33",
-
+  textLight: "#f6f5f5",
 };
 
 export const spacingX = {

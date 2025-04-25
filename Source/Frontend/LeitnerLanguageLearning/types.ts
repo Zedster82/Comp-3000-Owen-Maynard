@@ -14,6 +14,7 @@ import {
   TouchableOpacityProps,
   ViewStyle,
 } from "react-native";
+import Animated from "react-native-reanimated";
 
 export type ScreenWrapperProps = {
   style?: ViewStyle;
@@ -42,7 +43,10 @@ export type TypoProps = {
 };
 
 export type FlashCardProps = {
-  content: { question: string; answer: string };
+  content: { question: string; answer: string },
+  isFlipped: boolean,
+  setFlipped: (flipped: boolean) => void,
+
 }
 
 export type IconComponent = React.ComponentType<{
@@ -104,6 +108,14 @@ export interface CustomButtonProps extends TouchableOpacityProps {
   onPress?: () => void;
   loading?: boolean;
   children: React.ReactNode;
+}
+
+
+export type FeedBackProps  {
+  feedbackVisible: boolean;
+  feedbackType: "correct" | "incorrect";
+  fadeAnim: Animated.Value;
+  scaleAnim: Animated.Value;
 }
 
 export type ImageUploadProps = {
