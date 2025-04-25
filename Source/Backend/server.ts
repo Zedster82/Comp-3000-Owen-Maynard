@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import dotenv from "dotenv";
-import buildApp from "./app";
+import * as dotenv from 'dotenv';
+import buildApp from './app.js';
 const app = buildApp();
 
 // Load environment variables
@@ -31,7 +31,5 @@ mongoose
 app.get('/', (req, res) => {
     res.status(200).send('Server is running!');
 });
-
-
 
 export default app;

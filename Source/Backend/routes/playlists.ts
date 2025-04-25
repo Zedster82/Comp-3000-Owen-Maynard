@@ -1,7 +1,7 @@
-import express from "express";
-import cors from "cors";
+import * as express from "express";
+import * as cors from "cors";
 import mongoose from 'mongoose';
-import bodyParser from "body-parser";
+import * as bodyParser from "body-parser";
 import verifyRequest from "../auth/verifyRequest";
 import {
     createPlaylistFunctions,
@@ -30,15 +30,16 @@ export const playlistsRouter = () => {
 
             // Create the playlist after checks
             // Return 200 or 201 on success
-            if (result?.statusCode === 201) {
+            if (result?.status === 201) {
                 const newPlaylist = new Playlist(playlistData);
                 await newPlaylist.save();
+                res.status(201).json({ message: "Playlist created successfully", playlist: newPlaylist });
             }
-            return result;
+            res.status(result.status).json({ message: result.message });
             
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -56,14 +57,15 @@ export const playlistsRouter = () => {
             const result = await editPlaylistFunctions(req, res, existingPlaylist);
             // Return 200 or 201 on success
 
-            if (result?.statusCode === 200) {
+            if (result?.status === 200) {
                 await Playlist.findByIdAndUpdate(playlistID, playlistData);
+                res.status(200).json({ message: "Playlist updated successfully" });
             }
 
-            return result;
+            res.status(result.status).json({ message: result.message });
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -78,15 +80,16 @@ export const playlistsRouter = () => {
             
             const result = await deletePlaylistFunctions(req, res, existingPlaylist);
             // Delete from database
-            if (result?.statusCode === 200) {
+            if (result?.status === 200) {
                 await Playlist.findByIdAndDelete(playlistID);
+                res.status(200).json({ message: "Playlist deleted successfully" });
             }
             
             // Return 200 on success
-            return result;
+            res.status(result.status).json({ message: result.message });
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -101,17 +104,12 @@ export const playlistsRouter = () => {
             const returnObjects = await Playlist.find({ userId: userID });
             
             // Return them in response
-            const response = await getAllPlaylistsFunctions(req, res, returnObjects);
+            const result = await getAllPlaylistsFunctions(req, res, returnObjects);
 
-            if (response?.statusCode === 200) {
-                return response;
-            }
-
-            //Unathorized
-            return res.status(401).json({ message: "Unauthorized" });
+            res.status(result.status).json({ message: result.message });
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -127,21 +125,22 @@ export const playlistsRouter = () => {
 
             const result = await replaceCardListFunctions(req, res, existingPlaylist);
             
-            if(!existingPlaylist) {
-                return res.status(404).json({ message: "Playlist not found" });
+            if(result?.status === 404) {
+                res.status(404).json({ message: "Playlist not found" });
             }
             
             // Replace the entire cardList
-            if (result?.statusCode === 200) {
+            if (result?.status === 200 && existingPlaylist) {
                 existingPlaylist.cardList = cardList;
                 await existingPlaylist.save();
+                res.status(200).json({ message: "Card list replaced successfully" });
             }
 
-            return result;
+            res.status(result.status).json({ message: result.message });
         } catch (error) {
             console.log(error);
             console.error(error);
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
         }
     });
 

@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import request from 'supertest';
+import * as request from 'supertest';
 // Remove app import
 const BASE_URL = 'http://localhost:8282'; 
 
 describe('Playlist Endpoints', () => {
 
-    let playlistId = null; 
+    let playlistId: string | null = null;
     it('should create a new playlist', async () => {
         const res = await request(BASE_URL)
             .post('/api/playlists')

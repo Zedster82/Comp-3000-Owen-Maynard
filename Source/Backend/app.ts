@@ -1,5 +1,6 @@
-import express, { urlencoded, json } from "express";
-import cors from "cors";
+import  { urlencoded, json } from "express";
+import * as express from "express";
+import * as cors from "cors";
 import helmet from "helmet";
 import { flashCardRouter } from "./routes/flashCard";
 import { playlistsRouter } from "./routes/playlists";

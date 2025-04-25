@@ -27,9 +27,9 @@ const Playlists = () => {
 
     useEffect(() => {
         const testPlaylist: PlaylistType[] = [
-            { _id:"testsgfd", title: 'Chinese', user: 'testuser', cardList: ["1"] },
-            { _id:"testsgfd", title: 'Chinese Characters', user: 'testuser', cardList: ["2"] },
-            { _id:"testsgfd", title: 'Playlist 3', user: 'testuser', cardList: ["3","2","36"] },
+            { _id: "playlist1", title: 'Chinese', user: 'testuser', cardList: ["1"] },
+            { _id: "playlist2", title: 'Chinese Characters', user: 'testuser', cardList: ["2"] },
+            { _id: "playlist3", title: 'Playlist 3', user: 'testuser', cardList: ["3","2","36"] },
         ]
 
 

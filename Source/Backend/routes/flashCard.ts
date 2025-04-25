@@ -1,9 +1,8 @@
-import express from "express";
-import cors from "cors";
+import * as express from "express";
+import * as cors from "cors";
 import mongoose from 'mongoose';
-import bodyParser from "body-parser";
+import * as bodyParser from "body-parser";
 import verifyRequest from "../auth/verifyRequest";
-import { create } from "domain";
 
 import { 
 createFlashCardFunctions, 
@@ -31,22 +30,23 @@ export const flashCardRouter = () => {
             // Ensure userID matches the authenticated user
             // Validate data (question/answer length, etc.)
             let result = await createFlashCardFunctions(req, res, existingFlashcard);
-            console.log(`Status code: ${result.statusCode}`);
+            console.log(`Status code: ${result.status}`);
 
             // Create the flashcard after checks
-            if (result?.statusCode == 201){
+            if (result?.status == 201){
                 console.log("Flashcard created in database");
                 const newFlashcard = new Flashcard(flashcardData);
                 await newFlashcard.save();
+                res.status(201).json({ message: "Flashcard created successfully", flashcard: newFlashcard });
             }
             
-            // Return 201 on success
-            return result;
+            res.status(result.status).json({ message: result.message });
+            
             
         } catch (error) {
             console.log(error);
             // Return 500 on error
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -63,15 +63,17 @@ export const flashCardRouter = () => {
             let result = await editFlashCardFunctions(req, res, existingFlashcard);
             
             // Update flashcard in DB
-            if (result?.statusCode == 200){
+            if (result?.status == 200){
                 await Flashcard.findOneAndUpdate({_id: flashcardId}, flashcardData);
             }
             // Return 200 on success
-            return result;
+            res.status(result.status).json({ message: result.message });
+            
+            // return result;
         } catch (error) {
             console.log(error);
             // Return 500 on error
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -87,16 +89,16 @@ export const flashCardRouter = () => {
             let result = await deleteFlashCardFunctions(req, res, existingFlashcard);
             
             // Delete from database only if result status is 200 or 204
-            if (result?.statusCode === 200 || result?.statusCode === 204) {
+            if (result?.status === 200 || result?.status === 204) {
                 await Flashcard.findOneAndDelete({_id: flashcardId});
+                res.status(200).json({ message: "Flashcard deleted successfully" });
             }
             
-            // Return 200 on success
-            return result;
+            res.status(result.status).json({ message: result.message });
         } catch (error) {
             console.log(error);
             // Return 500 on error
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -107,20 +109,17 @@ export const flashCardRouter = () => {
             const userID = req.params.userID;
             
             // Fetch all flashcards for user
-            const returnObjects = Flashcard.find({ userId: userID });
+            const returnObjects = await Flashcard.find({ userId: userID });
             //Checks
-            const response = await getAllFlashCardFunctions(req, res, returnObjects);
+            const result = await getAllFlashCardFunctions(req, res, returnObjects);
             // Return list
 
-            if (response.statusCode === 200){
-                return response;
-            }
+            res.status(result.status).json({ message: result.message, data: result.data });
 
-            //Return authorization error
-            return res.status(403).json({ message: "Unauthorized" });
+            
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -133,31 +132,31 @@ export const flashCardRouter = () => {
 
             //Get current counts
             const flashcard = await Flashcard.findById(flashcardId);
-            const failCount = flashcard?.failCount;
-            const correctCount = flashcard?.correctCount;
+            const failCount = flashcard?.failCount ?? 0;
+            const correctCount = flashcard?.correctCount ?? 0;
+            
 
             //Validation
             let result = await updateFlashCardCountFunctions(req, res, failCount, correctCount);
 
-            if (result.statusCode == 400){
-                return result;
-            }
+            
             
             // Only update database if status is 200
-            if (result.statusCode === 200) {
+            if (result.status === 200) {
                 if (flashcard?.correctCount) { //if correctCount exists
                     await Flashcard.findOneAndUpdate({_id: flashcardId}, { correctCount: req.body.correctCount });
                 }
                 else { //if failCount exists
                     await Flashcard.findOneAndUpdate({_id: flashcardId}, { failCount: req.body.failCount });
                 }
+                res.status(200).json({ message: "Flashcard count updated successfully" });
             }
             
-            return result;
+            res.status(result.status).json({ message: result.message });
             
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
         }
     });
 
@@ -169,29 +168,29 @@ export const flashCardRouter = () => {
             idCheck(res, flashcardId);
 
             const flashcard = await Flashcard.findById(flashcardId);
-            const currentPriority = flashcard?.priority;
+            const currentPriority = flashcard?.priority ?? 0;
 
             let result = await updateFlashCardPriorityFunctions(req, res, currentPriority);
 
-            if (result.statusCode == 200){
+            if (result.status == 200){
                 // Use flashcardId from params, not from body, and add await
                 await Flashcard.findOneAndUpdate({_id: flashcardId}, { priority: req.body.priority });
+
             }
 
-            return result;
+            res.status(result.status).json({ message: result.message });
 
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
         }
     });
 
 
-    const idCheck = (res, flashcardId) => {
+    const idCheck = (res:any, flashcardId:string) => {
         if (!mongoose.Types.ObjectId.isValid(flashcardId)) {
             return res.status(400).json({ message: "Invalid ID format" });
           }
-        
     }
 
     return { router };

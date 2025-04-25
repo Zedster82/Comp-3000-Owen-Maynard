@@ -1,14 +1,8 @@
-const verifyRequest = (req, res, next) => {
+import { Request, Response, NextFunction } from 'express';
 
+const verifyRequest = (req: Request, res: Response, next: NextFunction) => {
+  // Your authentication logic here
+  next();
+};
 
-    const supabaseAuth = true
-
-    if (supabaseAuth) {
-        next();
-        // return res.status(200).json({ success: "Valid Request" });
-    }
-    else{
-        return res.status(401).json({ error: "Invalid Request" });
-    }
-}
 export default verifyRequest;

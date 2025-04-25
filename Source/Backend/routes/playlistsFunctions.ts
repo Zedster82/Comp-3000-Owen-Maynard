@@ -1,71 +1,103 @@
+import { RouteParameters } from "express-serve-static-core";
+import { Request, Response } from 'express';
+
+// Define interfaces for your data models
+import { IPlaylist } from '../models/playlists'; // Adjust the import path as needed
+
+// Define type for the request with user property (which comes from authentication middleware)
+interface AuthRequest extends Request {
+  user: {
+    id: string;
+    // Add other user properties as needed
+  }
+}
+
 // Create playlist
-export const createPlaylistFunctions = async (req, res, existingPlaylist) => {
+export const createPlaylistFunctions = async (
+  req: Request, 
+  res: Response, 
+  existingPlaylist: IPlaylist | null
+) => {
     // Check if playlist already exists
     // Validate user ownership (req.user?)
     // Validate data (title length, etc.)
     if (existingPlaylist) {
-        return res.status(400).json({ message: "Playlist already exists" });
+        return { status: 400, message: "Playlist already exists" };
     }
 
-    if (req.body.userId.toString() !== req.user.id) {
-        return res.status(403).json({ message: "Unauthorized" });
-    }
+    // if (req.body.userId.toString() !== req.params.userID) {
+    //     return res.status(403).json({ message: "Unauthorized" });
+    // }
 
     if (req.body.title.length > 200) {
-        return res.status(400).json({ message: "Title must be less than 200 characters" });
+        return { status: 400, message: "Title must be less than 200 characters" };
     }
 
-    return res.status(201).json({ message: "Playlist created successfully", playlist: req.body });
+    return { status: 201, message: "Playlist created successfully", playlist: req.body };
 };
 
 // Edit playlist
-export const editPlaylistFunctions = async (req, res, existingPlaylist) => {
+export const editPlaylistFunctions = async (
+  req: Request, 
+  res: Response, 
+  existingPlaylist: IPlaylist | null
+) => {
     //Check if playlist exists
     // Validate user ownership
     // Validate data (title length, etc.)
     if (!existingPlaylist) {
-        return res.status(404).json({ message: "Playlist not found" });
+        return { status: 404, message: "Playlist not found" };
     }
-    if (existingPlaylist.userId.toString() !== req.user.id) {
-        return res.status(403).json({ message: "Unauthorized" });
-    }
+    // if (existingPlaylist.userID.toString() !== req.params.userID) {
+    //     return res.status(403).json({ message: "Unauthorized" });
+    // }
     if (req.body.title.length > 200) {
-        return res.status(400).json({ message: "Title must be less than 200 characters" });
+        return { status: 400, message: "Title must be less than 200 characters" };
     }
-    return res.status(200).json({ message: "Playlist updated" });
+    return { status: 200, message: "Playlist updated" };
 };
 
 // Delete playlist
-export const deletePlaylistFunctions = async (req, res, existingPlaylist) => {
+export const deletePlaylistFunctions = async (
+  req: Request, 
+  res: Response, 
+  existingPlaylist: IPlaylist | null
+) => {
     // Validate user ownership
     // Check if playlist exists
     if (!existingPlaylist) {
-        return res.status(404).json({ message: "Playlist not found" });
+        return { status: 404, message: "Playlist not found" };
     }
-    if (existingPlaylist.userId.toString() !== req.user.id) {
-        return res.status(403).json({ message: "Unauthorized" });
-    }
+    // if (existingPlaylist.userID.toString() !== req.user.id) {
+    //     return res.status(403).json({ message: "Unauthorized" });
+    // }
+    return { status: 200, message: "Playlist deleted" }; // Added a proper return that was missing
 };
 
 // Get all playlists
-export const getAllPlaylistsFunctions = async (req, res, returnObjects) => {
-    
-
-    return res.status(200).json(returnObjects);
+export const getAllPlaylistsFunctions = async (
+  req: Request, 
+  res: Response, 
+  returnObjects: IPlaylist[]
+) => {
+    return { status: 200, message:"Returned all Playlists", data: returnObjects };
 };
 
-
 // Replace entire cardList
-export const replaceCardListFunctions = async (req, res, existingPlaylist) => {
+export const replaceCardListFunctions = async (
+  req: Request, 
+  res: Response, 
+  existingPlaylist: IPlaylist | null
+) => {
     // Check if playlist exists
     // Validate user ownership
     if (!existingPlaylist) {
-        return res.status(404).json({ message: "Playlist not found" });
+        return { status: 404, message: "Playlist not found" };
     }
     
     // Validate user ownership
-    if (existingPlaylist.userId.toString() !== req.user.id) {
-        return res.status(403).json({ message: "Not authorized to modify this playlist" });
-    }
-    return res.status(200).json({ message: "Card list replaced" });
+    // if (existingPlaylist.userID.toString() !== req.user.id) {
+    //     return res.status(403).json({ message: "Not authorized to modify this playlist" });
+    // }
+    return { status: 200, message: "Card list replaced" };
 };

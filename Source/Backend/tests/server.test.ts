@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { describe, it, expect } from 'vitest';
-import request from 'supertest';
+import * as request from 'supertest';
 
 // Define the base URL for your server
 const BASE_URL = 'http://localhost:8282';
@@ -10,7 +10,7 @@ describe('Server Tests', () => {
     try {
       const response = await axios.get(BASE_URL);
       expect(response.status).toBe(200);
-    } catch (error) {
+    } catch (error: any) {
       // Fail the test if there's a connection error
       throw new Error('Could not connect to server: ' + error.message);
     }

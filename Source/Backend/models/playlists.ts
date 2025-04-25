@@ -1,6 +1,14 @@
 import { kMaxLength } from 'buffer';
 import mongoose from 'mongoose';
 
+// Interface for TypeScript type checking
+export interface IPlaylist {
+    _id?: mongoose.Types.ObjectId;
+    userID: string;
+    playlistName: string;
+    cardList: mongoose.Types.ObjectId[] | string[];
+}
+
 const playlistsSchema = new mongoose.Schema({
     userID: {
         type: String,
@@ -19,5 +27,5 @@ const playlistsSchema = new mongoose.Schema({
     }
 });
 
-export const Playlist = mongoose.model('Playlist', playlistsSchema);
+export const Playlist = mongoose.model<IPlaylist>('Playlist', playlistsSchema);
 

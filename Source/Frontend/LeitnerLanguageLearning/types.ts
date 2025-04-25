@@ -111,7 +111,7 @@ export interface CustomButtonProps extends TouchableOpacityProps {
 }
 
 
-export type FeedBackProps  {
+export type FeedBackProps = {
   feedbackVisible: boolean;
   feedbackType: "correct" | "incorrect";
   fadeAnim: Animated.Value;

@@ -1,5 +1,16 @@
 import mongoose from 'mongoose';
 
+// Interface for TypeScript type checking
+export interface IFlashcard {
+    _id?: mongoose.Types.ObjectId;
+    userID: string;
+    question: string;
+    answer: string;
+    correctCount: number;
+    failCount: number;
+    priority: number;
+}
+
 const flashcardSchema = new mongoose.Schema({
     userID: {
         type: String,
@@ -29,5 +40,5 @@ const flashcardSchema = new mongoose.Schema({
     }
 });
 
-export const  Flashcard = mongoose.model('Flashcard', flashcardSchema);
+export const Flashcard = mongoose.model<IFlashcard>('Flashcard', flashcardSchema);
 
