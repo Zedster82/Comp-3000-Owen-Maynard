@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { describe, it, expect } from 'vitest';
-import * as request from 'supertest';
+import request from 'supertest';
 
 // Define the base URL for your server
 const BASE_URL = 'http://localhost:8282';

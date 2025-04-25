@@ -3,7 +3,7 @@
 import { Request, Response } from 'express';
 
 // Define interface for FlashCard
-import { IFlashcard } from '../models/flashcards'; // Adjust the import path as needed
+import { IFlashcard } from '../models/flashcards.js'; // Adjust the import path as needed
 
 // Define AuthRequest interface same as in playlists
 interface AuthRequest extends Request {
@@ -69,7 +69,7 @@ export const deleteFlashCardFunctions = async (
     //     return { status: 403, message: "Unauthorized" };
     // }
 
-    return { status: 200, message: "Flashcard Deleted" };
+    return { status: 200, message: "Flashcard Deleted Successfully" };
 }
 //Get all flashcards of user
 export const getAllFlashCardFunctions = async (
@@ -121,5 +121,5 @@ export const updateFlashCardCountFunctions = async (
         //Data manipulation, not allowed to update correct count
         return { status: 400, message: "Invalid request" };
     }
-    return { status: 200, message: "Flashcard count updated" };
+    return { status: 200, message: "Flashcard count updated successfully" };
 }

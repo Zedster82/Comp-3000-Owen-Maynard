@@ -2,7 +2,7 @@ import { RouteParameters } from "express-serve-static-core";
 import { Request, Response } from 'express';
 
 // Define interfaces for your data models
-import { IPlaylist } from '../models/playlists'; // Adjust the import path as needed
+import { IPlaylist } from '../models/playlists.js'; // Adjust the import path as needed
 
 // Define type for the request with user property (which comes from authentication middleware)
 interface AuthRequest extends Request {
@@ -22,7 +22,7 @@ export const createPlaylistFunctions = async (
     // Validate user ownership (req.user?)
     // Validate data (title length, etc.)
     if (existingPlaylist) {
-        return { status: 400, message: "Playlist already exists" };
+        return { status: 400, message: "Playlist already exists", playlist: existingPlaylist };
     }
 
     // if (req.body.userId.toString() !== req.params.userID) {
@@ -54,7 +54,7 @@ export const editPlaylistFunctions = async (
     if (req.body.title.length > 200) {
         return { status: 400, message: "Title must be less than 200 characters" };
     }
-    return { status: 200, message: "Playlist updated" };
+    return { status: 200, message: "Playlist updated successfully" };
 };
 
 // Delete playlist
@@ -71,7 +71,7 @@ export const deletePlaylistFunctions = async (
     // if (existingPlaylist.userID.toString() !== req.user.id) {
     //     return res.status(403).json({ message: "Unauthorized" });
     // }
-    return { status: 200, message: "Playlist deleted" }; // Added a proper return that was missing
+    return { status: 200, message: "Playlist deleted successfully" }; // Added a proper return that was missing
 };
 
 // Get all playlists
@@ -99,5 +99,5 @@ export const replaceCardListFunctions = async (
     // if (existingPlaylist.userID.toString() !== req.user.id) {
     //     return res.status(403).json({ message: "Not authorized to modify this playlist" });
     // }
-    return { status: 200, message: "Card list replaced" };
+    return { status: 200, message: "Card list replaced successfully" };
 };

@@ -2,16 +2,16 @@ import * as express from "express";
 import * as cors from "cors";
 import mongoose from 'mongoose';
 import * as bodyParser from "body-parser";
-import verifyRequest from "../auth/verifyRequest";
+import verifyRequest from "../auth/verifyRequest.js";
 import {
     createPlaylistFunctions,
     editPlaylistFunctions,
     deletePlaylistFunctions,
     getAllPlaylistsFunctions,
     replaceCardListFunctions
-} from "./playlistsFunctions"; // hypothetical import
+} from "./playlistsFunctions.js"; // hypothetical import
 //const { body, validationResult } = require("express-validator");
-import { Playlist } from "../models/playlists";
+import { Playlist } from "../models/playlists.js";
 
 
 export const playlistsRouter = () => {
@@ -33,9 +33,9 @@ export const playlistsRouter = () => {
             if (result?.status === 201) {
                 const newPlaylist = new Playlist(playlistData);
                 await newPlaylist.save();
-                res.status(201).json({ message: "Playlist created successfully", playlist: newPlaylist });
+                
             }
-            res.status(result.status).json({ message: result.message });
+            res.status(result.status).json({ message: result.message, playlist: result.playlist });
             
         } catch (error) {
             console.log(error);
@@ -59,7 +59,7 @@ export const playlistsRouter = () => {
 
             if (result?.status === 200) {
                 await Playlist.findByIdAndUpdate(playlistID, playlistData);
-                res.status(200).json({ message: "Playlist updated successfully" });
+                
             }
 
             res.status(result.status).json({ message: result.message });
@@ -82,7 +82,7 @@ export const playlistsRouter = () => {
             // Delete from database
             if (result?.status === 200) {
                 await Playlist.findByIdAndDelete(playlistID);
-                res.status(200).json({ message: "Playlist deleted successfully" });
+                
             }
             
             // Return 200 on success
@@ -125,15 +125,13 @@ export const playlistsRouter = () => {
 
             const result = await replaceCardListFunctions(req, res, existingPlaylist);
             
-            if(result?.status === 404) {
-                res.status(404).json({ message: "Playlist not found" });
-            }
+            
             
             // Replace the entire cardList
             if (result?.status === 200 && existingPlaylist) {
                 existingPlaylist.cardList = cardList;
                 await existingPlaylist.save();
-                res.status(200).json({ message: "Card list replaced successfully" });
+                
             }
 
             res.status(result.status).json({ message: result.message });

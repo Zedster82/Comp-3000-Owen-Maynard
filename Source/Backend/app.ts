@@ -1,13 +1,18 @@
 import  { urlencoded, json } from "express";
-import * as express from "express";
-import * as cors from "cors";
+import express from "express";
+import cors from "cors";
 import helmet from "helmet";
-import { flashCardRouter } from "./routes/flashCard";
-import { playlistsRouter } from "./routes/playlists";
+import { flashCardRouter } from "./routes/flashCard.js";
+import { playlistsRouter } from "./routes/playlists.js";
 
-const swStats = require('swagger-stats');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+
+import swStats from 'swagger-stats';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json' with { type: 'json' };
+
+// const swStats = require('swagger-stats');
+// const swaggerUi = require('swagger-ui-express');
+// const swaggerDocument = require('./swagger.json');
 
 function buildApp(): express.Application {
     const app = express();

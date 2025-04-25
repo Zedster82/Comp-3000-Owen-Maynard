@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import * as request from 'supertest';
+import request from 'supertest';
 // Remove app import
 const BASE_URL = 'http://localhost:8282'; 
 

@@ -2,7 +2,7 @@ import * as express from "express";
 import * as cors from "cors";
 import mongoose from 'mongoose';
 import * as bodyParser from "body-parser";
-import verifyRequest from "../auth/verifyRequest";
+import verifyRequest from "../auth/verifyRequest.js";
 
 import { 
 createFlashCardFunctions, 
@@ -12,8 +12,8 @@ getAllFlashCardFunctions,
 getFlashCardByPlaylistIdFunctions,
 updateFlashCardCountFunctions,
 updateFlashCardPriorityFunctions
-} from "./flashCardFunctions";
-import { Flashcard } from "../models/flashcards";
+} from "./flashCardFunctions.js";
+import { Flashcard } from "../models/flashcards.js";
 //const { body, validationResult } = require("express-validator");
 
 export const flashCardRouter = () => {
@@ -37,7 +37,7 @@ export const flashCardRouter = () => {
                 console.log("Flashcard created in database");
                 const newFlashcard = new Flashcard(flashcardData);
                 await newFlashcard.save();
-                res.status(201).json({ message: "Flashcard created successfully", flashcard: newFlashcard });
+                
             }
             
             res.status(result.status).json({ message: result.message });
@@ -91,7 +91,7 @@ export const flashCardRouter = () => {
             // Delete from database only if result status is 200 or 204
             if (result?.status === 200 || result?.status === 204) {
                 await Flashcard.findOneAndDelete({_id: flashcardId});
-                res.status(200).json({ message: "Flashcard deleted successfully" });
+                
             }
             
             res.status(result.status).json({ message: result.message });
