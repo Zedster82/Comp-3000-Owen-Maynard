@@ -5,7 +5,8 @@ import mongoose from 'mongoose';
 export interface IPlaylist {
     _id?: mongoose.Types.ObjectId;
     userID: string;
-    playlistName: string;
+    title: string;
+    
     cardList: mongoose.Types.ObjectId[] | string[];
 }
 
@@ -15,7 +16,7 @@ const playlistsSchema = new mongoose.Schema({
         required: true,
         maxlength: 50,
     },
-    playlistName: {
+    title: {
         type: String,
         required: true,
         maxlength: 50

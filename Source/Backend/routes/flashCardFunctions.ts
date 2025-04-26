@@ -20,7 +20,7 @@ export const createFlashCardFunctions = async (
 ) => {
     
     if (existingFlashcard) {
-        return { status: 400, message: "Flashcard already exists" };
+        return { status: 400, message: "Flashcard already exists", flashcard: existingFlashcard };
     }
 
     // if (req.body.userId !== req.user.id) {

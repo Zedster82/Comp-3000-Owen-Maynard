@@ -1,4 +1,4 @@
-import * as express from "express";
+import e, * as express from "express";
 import * as cors from "cors";
 import mongoose from 'mongoose';
 import * as bodyParser from "body-parser";
@@ -25,12 +25,12 @@ export const flashCardRouter = () => {
             // Convert req.body to flashcard data
             // Check if flashcard already exists
             const flashcardData = req.body;
-            const existingFlashcard = await Flashcard.findOne({ question: flashcardData.question, userID: req.body.userID });
+            const existingFlashcard = await Flashcard.findOne({userID: req.body.userID, question: flashcardData.question,answer:flashcardData.answer });
             
             // Ensure userID matches the authenticated user
             // Validate data (question/answer length, etc.)
             let result = await createFlashCardFunctions(req, res, existingFlashcard);
-            console.log(`Status code: ${result.status}`);
+            console.log(`Existing Flashcard (null): ${existingFlashcard}`);
 
             // Create the flashcard after checks
             if (result?.status == 201){
@@ -40,7 +40,7 @@ export const flashCardRouter = () => {
                 
             }
             
-            res.status(result.status).json({ message: result.message });
+            res.status(result.status).json({ message: result.message, data: result.flashcard });
             
             
         } catch (error) {
@@ -51,7 +51,7 @@ export const flashCardRouter = () => {
     });
 
     //Edit flashcard (use PATCH instead of PUT) - Done
-    router.patch("/:_id", verifyRequest, async (req, res) => {
+    router.patch("/:id", verifyRequest, async (req, res) => {
         try {
             const flashcardId = req.params._id;
             idCheck(res, flashcardId);
@@ -78,7 +78,7 @@ export const flashCardRouter = () => {
     });
 
     //Delete flashcard
-    router.delete("/:_id", verifyRequest, async (req, res) => {
+    router.delete("/:id", verifyRequest, async (req, res) => {
         try {
             // Parse flashcard id
             const flashcardId = req.params._id;
@@ -91,7 +91,6 @@ export const flashCardRouter = () => {
             // Delete from database only if result status is 200 or 204
             if (result?.status === 200 || result?.status === 204) {
                 await Flashcard.findOneAndDelete({_id: flashcardId});
-                
             }
             
             res.status(result.status).json({ message: result.message });
@@ -125,7 +124,7 @@ export const flashCardRouter = () => {
 
 
     // Update flashcard count
-    router.patch("/updateCount/:_id", verifyRequest, async (req, res) => {
+    router.patch("/updateCount/:id", verifyRequest, async (req, res) => {
         try {
             const flashcardId = req.params._id;
             idCheck(res, flashcardId);
@@ -149,7 +148,7 @@ export const flashCardRouter = () => {
                 else { //if failCount exists
                     await Flashcard.findOneAndUpdate({_id: flashcardId}, { failCount: req.body.failCount });
                 }
-                res.status(200).json({ message: "Flashcard count updated successfully" });
+                
             }
             
             res.status(result.status).json({ message: result.message });
@@ -175,7 +174,6 @@ export const flashCardRouter = () => {
             if (result.status == 200){
                 // Use flashcardId from params, not from body, and add await
                 await Flashcard.findOneAndUpdate({_id: flashcardId}, { priority: req.body.priority });
-
             }
 
             res.status(result.status).json({ message: result.message });
@@ -188,9 +186,9 @@ export const flashCardRouter = () => {
 
 
     const idCheck = (res:any, flashcardId:string) => {
-        if (!mongoose.Types.ObjectId.isValid(flashcardId)) {
-            return res.status(400).json({ message: "Invalid ID format" });
-          }
+        // if (!mongoose.Types.ObjectId.isValid(flashcardId)) {
+        //     res.status(400).json({ message: "Invalid ID format" });
+        //   }
     }
 
     return { router };
