@@ -1,5 +1,4 @@
 import * as express from "express";
-import * as cors from "cors";
 import mongoose from 'mongoose';
 import * as bodyParser from "body-parser";
 import verifyRequest from "../auth/verifyRequest.js";
