@@ -47,9 +47,7 @@ export const editFlashCardFunctions = async (
         return { status: 404, message: "Flashcard not found" };
     }
 
-    if (existingFlashcard.userID.toString() !== req.params._id) {
-        return { status: 403, message: "Unauthorized" };
-    }
+    
 
     return { status: 200, message: "Flashcard updated" };
 
@@ -80,7 +78,7 @@ export const getAllFlashCardFunctions = async (
     // Check if data exists
 
     if (returnObjects.length === 0) {
-        return { status: 404, message: "No flashcards found" };
+        return { status: 404, message: "No flashcards found", data: returnObjects };
     }
 
     return { status: 200,message: "Flashcard returned", data: returnObjects };

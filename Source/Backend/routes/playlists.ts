@@ -32,13 +32,16 @@ export const playlistsRouter = () => {
             if (result?.status === 201) {
                 const newPlaylist = new Playlist(playlistData);
                 await newPlaylist.save();
-                
+                res.status(201).json({ message: result.message, playlist: newPlaylist });
+                return;
             }
+
             res.status(result.status).json({ message: result.message, playlist: result.playlist });
-            
+            return;
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: "Internal server error" });
+            return;
         }
     });
 
@@ -47,6 +50,13 @@ export const playlistsRouter = () => {
         try {
             // Parse request into updated data
             const playlistID = req.params.id;
+
+            // Check if id is valid
+            if (!mongoose.Types.ObjectId.isValid(playlistID)) {
+                console.log("Invalid playlist ID:", playlistID);
+                res.status(400).json({ message: "Invalid playlist ID" });
+                return;
+            }
             const playlistData = req.body;
             // Check if playlist with this id exists
             const existingPlaylist = await Playlist.findById(playlistID);
@@ -58,13 +68,16 @@ export const playlistsRouter = () => {
 
             if (result?.status === 200) {
                 await Playlist.findByIdAndUpdate(playlistID, playlistData);
-                
+                res.status(200).json({ message: result.message, playlist: playlistData });
+                return;
             }
 
             res.status(result.status).json({ message: result.message });
+            return;
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: "Internal server error" });
+            return;
         }
     });
 
@@ -73,6 +86,12 @@ export const playlistsRouter = () => {
         try {
             // Parse playlist id
             const playlistID = req.params.id;
+            // Check if id is valid
+            if (!mongoose.Types.ObjectId.isValid(playlistID)) {
+                console.log("Invalid playlist ID:", playlistID);
+                res.status(400).json({ message: "Invalid playlist ID" });
+                return;
+            }
             
             // Check if playlist exists
             const existingPlaylist = await Playlist.findById(playlistID);
@@ -86,6 +105,7 @@ export const playlistsRouter = () => {
             
             // Return 200 on success
             res.status(result.status).json({ message: result.message });
+            return;
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: "Internal server error" });
@@ -98,17 +118,23 @@ export const playlistsRouter = () => {
             // Parse user id
             const userID = req.params.id;
 
+            console.log("Get Playlist User ID:", userID);
+
             
             // Find all playlists that match user
-            const returnObjects = await Playlist.find({ userId: userID });
+            const returnObjects = await Playlist.find({ userID: userID });
+
+            console.log("Get Playlist Return Objects: ", returnObjects);
             
             // Return them in response
             const result = await getAllPlaylistsFunctions(req, res, returnObjects);
 
-            res.status(result.status).json({ message: result.message });
+            res.status(result.status).json({ message: result.message, data: result.data });
+            return;
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: "Internal server error" });
+            return;
         }
     });
 
@@ -134,12 +160,16 @@ export const playlistsRouter = () => {
             }
 
             res.status(result.status).json({ message: result.message });
+            return;
         } catch (error) {
             console.log(error);
             console.error(error);
             res.status(500).json({ message: "Internal server error" });
+            return;
         }
     });
+
+
 
     return { router };
 }

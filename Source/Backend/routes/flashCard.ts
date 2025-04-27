@@ -13,6 +13,7 @@ updateFlashCardCountFunctions,
 updateFlashCardPriorityFunctions
 } from "./flashCardFunctions.js";
 import { Flashcard } from "../models/flashcards.js";
+import { Console } from "console";
 //const { body, validationResult } = require("express-validator");
 
 export const flashCardRouter = () => {
@@ -36,43 +37,44 @@ export const flashCardRouter = () => {
                 console.log("Flashcard created in database");
                 const newFlashcard = new Flashcard(flashcardData);
                 await newFlashcard.save();
-                
+                res.status(201).json({ message: result.message, flashcard: newFlashcard });
+                return;
             }
             
             res.status(result.status).json({ message: result.message, data: result.flashcard });
-            
-            
+            return;
         } catch (error) {
             console.log(error);
-            // Return 500 on error
             res.status(500).json({ message: "Internal server error" });
+            return;
         }
     });
 
     //Edit flashcard (use PATCH instead of PUT) - Done
     router.patch("/:id", verifyRequest, async (req, res) => {
         try {
-            const flashcardId = req.params._id;
-            idCheck(res, flashcardId);
+            const flashcardID = req.params.id;
+            idCheck(res, flashcardID);
             const flashcardData = req.body;
 
+            console.log("Edit Flashcard,  ID: ", flashcardID);
+
             // Check if flashcard with this id exists
-            const existingFlashcard = await Flashcard.findById(flashcardId);
+            const existingFlashcard = await Flashcard.findById(flashcardID);
             // Validate user ownership
             let result = await editFlashCardFunctions(req, res, existingFlashcard);
             
-            // Update flashcard in DB
+            // Update flashcard in DB if code is 200
             if (result?.status == 200){
-                await Flashcard.findOneAndUpdate({_id: flashcardId}, flashcardData);
+                await Flashcard.findOneAndUpdate({_id: flashcardID}, flashcardData);
             }
-            // Return 200 on success
-            res.status(result.status).json({ message: result.message });
-            
-            // return result;
+            // Return status and message
+            res.status(result.status).json({ message: result.message, flashcard: flashcardData });
+            return;
         } catch (error) {
             console.log(error);
-            // Return 500 on error
             res.status(500).json({ message: "Internal server error" });
+            return;
         }
     });
 
@@ -80,7 +82,7 @@ export const flashCardRouter = () => {
     router.delete("/:id", verifyRequest, async (req, res) => {
         try {
             // Parse flashcard id
-            const flashcardId = req.params._id;
+            const flashcardId = req.params.id;
             idCheck(res, flashcardId);
             // Check if it exists
             const existingFlashcard = await Flashcard.findById(flashcardId);
@@ -93,10 +95,11 @@ export const flashCardRouter = () => {
             }
             
             res.status(result.status).json({ message: result.message });
+            return;
         } catch (error) {
             console.log(error);
-            // Return 500 on error
             res.status(500).json({ message: "Internal server error" });
+            return;
         }
     });
 
@@ -105,24 +108,30 @@ export const flashCardRouter = () => {
         try {
             // Identify user from request
             const userID = req.params.userID;
+
+            console.log("Get Flashcards User ID: ", userID);
             
-            // Fetch all flashcards for user
-            const returnObjects = await Flashcard.find({ userId: userID });
+            // Fetch all flashcards for user - FIXED: changed userId to userID to match schema
+            const returnObjects = await Flashcard.find({ userID: userID });
+            
+            // Debug the query results
+            // console.log("Query results:", returnObjects);
+            
             //Checks
             const result = await getAllFlashCardFunctions(req, res, returnObjects);
             // Return list
 
-            res.status(result.status).json({ message: result.message, data: result.data });
-
-            
+            res.status(result.status).json({ message: result.message, flashcards: result.data });
+            return;
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: "Internal server error" });
+            return;
         }
     });
 
-
     // Update flashcard count
+    
     router.patch("/updateCount/:id", verifyRequest, async (req, res) => {
         try {
             const flashcardId = req.params._id;
@@ -151,10 +160,11 @@ export const flashCardRouter = () => {
             }
             
             res.status(result.status).json({ message: result.message });
-            
+            return;
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: "Internal server error" });
+            return;
         }
     });
 
@@ -176,10 +186,11 @@ export const flashCardRouter = () => {
             }
 
             res.status(result.status).json({ message: result.message });
-
+            return;
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: "Internal server error" });
+            return;
         }
     });
 
