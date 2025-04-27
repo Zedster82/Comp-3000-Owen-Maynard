@@ -41,6 +41,9 @@ const _layout = () => {
               colorScheme === "dark" ? "#888888" : "#888888",
             tabBarStyle: {
               backgroundColor: colorScheme === "dark" ? "#121212" : "#FFFFFF",
+              height: 60,
+              
+              
             },
           }}
         >
