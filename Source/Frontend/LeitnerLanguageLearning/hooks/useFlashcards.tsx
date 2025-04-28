@@ -58,5 +58,8 @@ export function useFlashcardsForSelectedPlaylist() {
     };
   }, [selectedPlaylist]);
 
-  return { flashcards, loading };
+
+  
+
+  return { flashcards, setFlashcards, loading };
 }

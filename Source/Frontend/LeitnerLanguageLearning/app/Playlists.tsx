@@ -18,14 +18,14 @@ const Playlists = () => {
     const {modalContent, setModalContent, modalVisible, setModalVisible} = useModalView()
     const { playlists, setPlaylists, refreshPlaylists } = usePlaylists();
     
-    
+    const userId = 2;
     const queryClient = useQueryClient();
     
 
     
 
     const addNewPlaylist = async (playlistName: string, description: String, cards: string[]) => {
-        const userId = 2; // Keep or refactor as needed
+        
         const newPlaylist = {
             userID: userId,
             title: playlistName,

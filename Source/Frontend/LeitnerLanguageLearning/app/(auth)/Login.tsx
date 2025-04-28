@@ -10,12 +10,15 @@ import Toast from 'react-native-toast-message'
 import { Input } from '@rneui/themed'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
+import { useUserID } from '@/hooks/useUserID'
 
 const Login = () => {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const {userID, setUserID} = useUserID(); // Custom hook to manage user ID
 
   const loginButton = async () => {
     try {
@@ -25,6 +28,10 @@ const Login = () => {
       });
       if (response.status === 200 && response.data.token) {
         await AsyncStorage.setItem('jwt', response.data.token);
+        console.log('User ID:', username); // Log user ID for debugging
+        //await AsyncStorage.setItem('userID', username); // Store user ID in AsyncStorage
+        setUserID(username); // Set user ID in the custom hook
+        
         router.push('/Homepage');
         return;
       }
@@ -36,6 +43,7 @@ const Login = () => {
         visibilityTime: 1000,
       });
     } catch (error: any) {
+      console.error('Login error:', error);
       Toast.show({
         type: 'error',
         text1: 'Login Failed',

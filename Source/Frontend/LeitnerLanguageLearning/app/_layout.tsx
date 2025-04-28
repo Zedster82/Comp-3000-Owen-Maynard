@@ -92,6 +92,7 @@ const _layout = () => {
               options={{
                 href: null, // This prevents it from showing in the tab bar
                 tabBarStyle: { display: "none" }, //Hide the tab bar for this screen
+                headerShown: false, // Hide the header
               }}
             />
 
@@ -100,6 +101,7 @@ const _layout = () => {
               options={{
                 href: null, // This prevents it from showing in the tab bar
                 tabBarStyle: { display: "none" }, //Hide the tab bar for this screen
+                headerShown: false, // Hide the header
               }}
             />
             <Tabs.Screen
@@ -107,12 +109,21 @@ const _layout = () => {
               options={{
                 href: null, // This prevents it from showing in the tab bar
                 tabBarStyle: { display: "none" }, //Hide the tab bar for this screen
+                headerShown: false, // Hide the header
               }}
             />
             <Tabs.Screen
               name="playlists" // or any other route
               options={{
                 href: null, // This prevents it from showing in the tab bar
+              }}
+            />
+            <Tabs.Screen
+              name="playlists/[id]" // or any other route
+              options={{
+                href: null, // This prevents it from showing in the tab bar
+                tabBarStyle: { display: "none" }, //Hide the tab bar for this screen
+                headerShown: false, // Hide the header
               }}
             />
           </Tabs>

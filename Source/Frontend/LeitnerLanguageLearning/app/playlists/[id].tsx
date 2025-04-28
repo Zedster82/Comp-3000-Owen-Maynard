@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, Alert } from 'react-native'
+import { StyleSheet, View, ScrollView, Alert, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import ScreenWrapper from '@/components/ScreenWrapper'
@@ -13,6 +13,8 @@ import { useModalView } from '@/hooks/useModalView'
 import AddCard from '@/components/modals/AddCard'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
+import { Trash } from 'phosphor-react-native' // or wherever your Trash icon comes from
+import { useFlashcardsForSelectedPlaylist } from '@/hooks/useFlashcards'
 
 
 const PlaylistDetailScreen = () => {
@@ -24,9 +26,10 @@ const PlaylistDetailScreen = () => {
     const [title, setTitle] = useState('')
     const [playlistData, setPlaylistData] = useState<PlaylistType | null>(null)
     const [cardList, setCardList] = useState<any[]>([])
+    const {flashcards, setFlashcards} = useFlashcardsForSelectedPlaylist()
 
     useEffect(() =>  {
-      setCardList([]);
+      
       setPlaylistData(playlists.find(p => p._id === playlistID) || null);
       setTitle(playlists.find(p => p._id === playlistID)?.title || '');
     }, [playlistID, playlists])
@@ -99,6 +102,8 @@ const PlaylistDetailScreen = () => {
         Alert.alert('Error', 'Failed to update card list');
       }
 
+      setCardList(combinedCardList)
+
       setModalVisible(false)
 
       //Force refresh page
@@ -115,6 +120,29 @@ const PlaylistDetailScreen = () => {
 
     const handleAddCard = () => {
       openModal();
+    };
+
+    // Add this function to handle card deletion
+    const handleDeleteCard = async (cardIdToDelete: string) => {
+      const updatedCardList = cardList
+        .filter(card => (card.id || card._id) !== cardIdToDelete)
+        .map(card => ({ id: card.id || card._id }));
+
+      const payload = { cardList: updatedCardList };
+
+      try {
+        await axios.put(
+          `http://localhost:8282/api/playlists/${playlistID}/cardList`,
+          payload,
+          { headers: { 'Content-Type': 'application/json' } }
+        );
+        // Update local state after successful delete
+        setCardList(cardList.filter(card => (card.id || card._id) !== cardIdToDelete));
+        setFlashcards(updatedCardList);
+      } catch (error) {
+        console.error('Error deleting card from playlist:', error);
+        Alert.alert('Error', 'Failed to delete card');
+      }
     };
 
     if (!playlistData) return (
@@ -172,6 +200,9 @@ const PlaylistDetailScreen = () => {
                   <View key={card._id || card.id || index} style={styles.cardItem}>
                     <Typo>Question: {card.question}</Typo>
                     <Typo>Answer: {card.answer}</Typo>
+                    <TouchableOpacity onPress={() => handleDeleteCard(card.id || card._id)} style={styles.iconButton}>
+                      <Trash size={22} color={colors.errorcolor || 'red'} />
+                    </TouchableOpacity>
                   </View>
                 ))
               ) : (
@@ -236,5 +267,11 @@ const styles = StyleSheet.create({
       paddingVertical: 8,
       backgroundColor: colors.main,
       borderRadius: 8,
+    },
+    iconButton: {
+      marginTop: 8,
+      alignSelf: 'flex-end',
+      padding: 4,
+      borderRadius: 6,
     },
 })

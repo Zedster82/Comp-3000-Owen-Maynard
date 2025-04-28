@@ -21,10 +21,12 @@ import { opacity } from "react-native-reanimated/lib/typescript/Colors";
 import Feedback from "@/components/Feedback";
 import { usePlaylists } from "@/hooks/usePlaylists";
 import { useFlashcardsForSelectedPlaylist } from "@/hooks/useFlashcards";
+import { useUserID } from "@/hooks/useUserID";
 
 const Homepage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const {userID, setUserID} = useUserID(); // Custom hook to manage user ID
 
   // const [flashcards, setFlashcards] = useState([
   //   { question: "What is the capital of France?", answer: "Paris" },
@@ -151,10 +153,12 @@ const Homepage = () => {
     );
   }
 
+  
+
 
   return (
     <ScreenWrapper style={styles.fullDisplay}>
-      {/* <Typo fontWeight={"600"}>User ID: {selectedPlaylist.userID}</Typo> */}
+      <Typo fontWeight={"600"}>Username: {userID}</Typo>
       <Typo fontWeight={"600"}>Selected Playlist: {selectedPlaylist.title}</Typo>
       {/* <Typo fontWeight={"600"}>Selected Playlist ID: {selectedPlaylist._id}</Typo> */}
       

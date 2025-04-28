@@ -8,8 +8,6 @@ const Feedback = (
     {
         feedbackVisible = false,
         feedbackType,
-        fadeAnim, 
-        scaleAnim
     }: FeedBackProps
 ) => {
 
@@ -25,10 +23,6 @@ const Feedback = (
             feedbackType === "correct"
               ? styles.correctFeedback
               : styles.incorrectFeedback,
-            {
-              opacity: fadeAnim,
-              transform: [{ scale: scaleAnim }],
-            },
           ]}
         >
           <Typo style={styles.feedbackText}>
