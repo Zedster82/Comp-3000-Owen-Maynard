@@ -21,11 +21,14 @@ export const playlistsRouter = () => {
         try {
             // Parse request into playlist data
             const playlistData = req.body;
+            console.log("Create Playlist Data: ", playlistData);
 
-            const existingPlaylist = await Playlist.findOne({ title: playlistData.title, userId: playlistData.userId });
+            const existingPlaylist = await Playlist.findOne({ title: playlistData.title, userId: playlistData.userID });
 
             // Call function in "functions" file to handle specific logic
             const result = await createPlaylistFunctions(req, res, existingPlaylist);
+
+            
 
             // Create the playlist after checks
             // Return 200 or 201 on success

@@ -22,8 +22,11 @@ export const createPlaylistFunctions = async (
     // Validate user ownership (req.user?)
     // Validate data (title length, etc.)
     if (existingPlaylist) {
+        console.log("Existing Playlist: ")
+        console.log(existingPlaylist);
         return { status: 400, message: "Playlist already exists", playlist: existingPlaylist };
     }
+    
 
     // if (req.body.userId.toString() !== req.params.userID) {
     //     return res.status(403).json({ message: "Unauthorized" });

@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, FlatList, ScrollView, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Input } from "@rneui/themed";
 import Button from "../Button";
@@ -7,6 +14,8 @@ import { colors } from "@/constants/theme";
 import Typo from "../Typo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Scroll } from "phosphor-react-native";
+import { useUserID } from "@/hooks/useUserID";
+import { get } from "http";
 
 const AddCard = ({
   visible = false,
@@ -15,29 +24,26 @@ const AddCard = ({
 }: AddCardProps) => {
   const [cardID, setCardID] = useState("");
   const [cards, setCards] = useState<any[]>([]);
-  const [userID, setUserID] = useState<string | null>(null);
+  const { userID, setUserID } = useUserID(); // Custom hook to manage user ID
+
+  const getUserIDAndFetchCards = async () => {
+    console.log("User ID:", userID);
+    if (userID) {
+      try {
+        const response = await fetch(
+          `http://localhost:8282/api/flashcards/${userID}`
+        );
+        const data = await response.json();
+        setCards(data.flashcards || []);
+      } catch (error) {
+        console.error("Error fetching cards:", error);
+      }
+    }
+  };
 
   useEffect(() => {
-    const getUserIDAndFetchCards = async () => {
-      let id = await AsyncStorage.getItem('userID');
-      setUserID(id);
-      setUserID('2'); // For testing purposes, remove this line in production
-      id = '2'; // For testing purposes, remove this line in production
-      console.log("User ID:", id);
-      if (id) {
-        try {
-          const response = await fetch(
-            `http://localhost:8282/api/flashcards/${id}`,
-          );
-          const data = await response.json();
-          setCards(data.flashcards || []);
-        } catch (error) {
-          console.error("Error fetching cards:", error);
-        }
-      }
-    };
     getUserIDAndFetchCards();
-  }, []);
+  }, [visible]);
 
   const handleAddCard = () => {};
 
@@ -48,9 +54,11 @@ const AddCard = ({
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={getUserIDAndFetchCards}>
+        <Typo>Refresh</Typo>
+      </TouchableOpacity>
       <Typo color={colors.main}>Add Card</Typo>
 
-      
       <Typo style={{ marginTop: 16, marginBottom: 8 }}>Cards:</Typo>
 
       <ScrollView>

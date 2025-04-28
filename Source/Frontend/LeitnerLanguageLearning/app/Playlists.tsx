@@ -1,5 +1,5 @@
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, Touchable, TouchableWithoutFeedback, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import Typo from '@/components/Typo'
 import { Icon } from '@rneui/themed'
@@ -13,21 +13,26 @@ import Playlist from '@/components/Playlist'
 import { usePlaylists } from "@/hooks/usePlaylists";
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
+import { useUserID } from '@/hooks/useUserID'
 
 const Playlists = () => {
     const {modalContent, setModalContent, modalVisible, setModalVisible} = useModalView()
     const { playlists, setPlaylists, refreshPlaylists } = usePlaylists();
     
-    const userId = 2;
+    const {userID, setUserID} = useUserID(); // Custom hook to manage user ID
     const queryClient = useQueryClient();
     
 
+
+    useEffect(() => {
+        refreshPlaylists();
+    }, [])
     
 
     const addNewPlaylist = async (playlistName: string, description: String, cards: string[]) => {
         
         const newPlaylist = {
-            userID: userId,
+            userID: userID,
             title: playlistName,
             cardList: cards
         };

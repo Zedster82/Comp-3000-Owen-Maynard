@@ -14,7 +14,7 @@ export default function PlaylistsLayout() {
         name="[id]" 
         options={{ 
           title: 'View Playlist',
-          headerShown: true,
+          headerShown: false,
         }} 
       />
     </Stack>

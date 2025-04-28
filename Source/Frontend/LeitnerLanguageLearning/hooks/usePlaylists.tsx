@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { PlaylistType } from "@/types";
 import axios from "axios";
+import { useUserID } from "./useUserID";
 
 type PlaylistsContextType = {
   playlists: PlaylistType[];
@@ -15,10 +16,11 @@ const PlaylistsContext = createContext<PlaylistsContextType | undefined>(undefin
 export const PlaylistsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [playlists, setPlaylists] = useState<PlaylistType[]>([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState<PlaylistType | null>(null);
-  const userId = 2; // Replace with actual user ID logic
+  const {userID, setUserID} = useUserID(); // Custom hook to manage user ID
 
   const refreshPlaylists = async () => {
-    const response = await axios.get(`http://localhost:8282/api/playlists/${userId}`);
+    const response = await axios.get(`http://localhost:8282/api/playlists/${userID}`);
+    console.log("Playlists fetched:", response.data.data);
     setPlaylists(response.data.data);
   };
 

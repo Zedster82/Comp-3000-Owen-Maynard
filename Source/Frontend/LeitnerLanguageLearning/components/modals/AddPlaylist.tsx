@@ -22,7 +22,6 @@ const AddPlaylist = (
   const handleAddPlaylist = () => {
     
     returnHandler(playlistName, description, cards)
-
     
   }
 

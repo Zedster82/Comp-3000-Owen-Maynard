@@ -29,36 +29,44 @@ const PlaylistDetailScreen = () => {
     const {flashcards, setFlashcards} = useFlashcardsForSelectedPlaylist()
 
     useEffect(() =>  {
-      
       setPlaylistData(playlists.find(p => p._id === playlistID) || null);
       setTitle(playlists.find(p => p._id === playlistID)?.title || '');
+      setCardList([]); // Clear cardList when playlist changes
     }, [playlistID, playlists])
+
+    const updateCardList = async () => {
+      if (playlistData && playlistData.cardList && playlistData.cardList.length > 0) {
+        try {
+          console.log("Getting list:", playlistData)
+          const requestBody = {
+            list: playlistData.cardList.map(card => ({ id: card.id }))
+          };
+          const response = await fetch(`http://localhost:8282/api/flashcards/flashcardList/list`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+          });
+          const data = await response.json();
+          setCardList(data.flashcards || []);
+        } catch (error) {
+          console.error('Error fetching card list:', error);
+        }
+      }
+    };
 
     useEffect(() => {
       let isMounted = true;
-      const fetchCardList = async () => {
-        if (playlistData && playlistData.cardList && playlistData.cardList.length > 0) {
-          try {
-            const requestBody = {
-              list: playlistData.cardList.map(card => ({ id: card.id }))
-            };
-            const response = await fetch(`http://localhost:8282/api/flashcards/flashcardList/list`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(requestBody)
-            });
-            const data = await response.json();
-            if (isMounted) {
-              setCardList(data.flashcards || []);
-            }
-          } catch (error) {
-            console.error('Error fetching card list:', error);
-          }
+      
+      const fetchData = async () => {
+        if (isMounted) {
+          await updateCardList();
         }
       };
-      fetchCardList();
+      
+      fetchData();
+      
       return () => {
         isMounted = false;
       };
@@ -89,33 +97,21 @@ const PlaylistDetailScreen = () => {
       ]
       const payload = { cardList: combinedCardList }
 
-      // PUT to replace the flashcard list for this playlist
       try {
         await axios.put(
           `http://localhost:8282/api/playlists/${playlistID}/cardList`,
           payload,
           { headers: { 'Content-Type': 'application/json' } }
         );
-        // Optionally, refresh the card list after update
+        // Fetch updated playlist from backend
+        const updatedPlaylistRes = await axios.get(`http://localhost:8282/api/playlists/${playlistID}`);
+        setPlaylistData(updatedPlaylistRes.data);
       } catch (error) {
         console.error('Error updating playlist card list:', error);
         Alert.alert('Error', 'Failed to update card list');
       }
 
-      setCardList(combinedCardList)
-
       setModalVisible(false)
-
-      //Force refresh page
-
-      //Refresh the card list
-      // const updatedPlaylist = playlists.find(p => p._id === playlistID)
-      // if (updatedPlaylist) {
-      //   setCardList(updatedPlaylist.cardList || [])
-      // }
-      // setPlaylistData(updatedPlaylist || null)
-
-
     }
 
     const handleAddCard = () => {

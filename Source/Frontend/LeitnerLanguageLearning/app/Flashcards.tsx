@@ -7,10 +7,11 @@ import Typo from '@/components/Typo'
 import Modal from '@/components/Modal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { colors } from '@/constants/theme'
+import { useUserID } from '@/hooks/useUserID'
 
 const Flashcards = () => {
   const [cards, setCards] = useState<any[]>([])
-  const [userID, setUserID] = useState<string | null>(null)
+  const {userID, setUserID} = useUserID(); // Custom hook to manage user ID
   const [modalVisible, setModalVisible] = useState(false)
   const [editCard, setEditCard] = useState<any>(null)
   const [question, setQuestion] = useState('')
@@ -18,15 +19,14 @@ const Flashcards = () => {
 
   // Fetch all cards for the user
   const getUserIDAndFetchCards = async () => {
-    let id = await AsyncStorage.getItem('userID')
-    setUserID(id)
-    setUserID('2') // For testing purposes, remove this line in production
-    id = '2' // For testing purposes, remove this line in production
-    console.log("User ID:", id)
-    if (id) {
+    
+    
+    
+    console.log("User ID:", userID)
+    if (userID) {
       try {
         const response = await fetch(
-          `http://localhost:8282/api/flashcards/${id}`,
+          `http://localhost:8282/api/flashcards/${userID}`,
         )
         const data = await response.json()
         setCards(data.flashcards || [])
@@ -38,7 +38,7 @@ const Flashcards = () => {
 
   useEffect(() => {
     getUserIDAndFetchCards()
-  }, [])
+  }, [userID])
 
   // Open modal for new or edit
   const openModal = (card: any = null) => {

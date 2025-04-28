@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { usePlaylists } from "./usePlaylists";
+import { useUserID } from "./useUserID";
 
 export function useFlashcardsForSelectedPlaylist() {
   const { selectedPlaylist } = usePlaylists();
+  const {userID, setUserID} = useUserID(); // Custom hook to manage user ID
   const [flashcards, setFlashcards] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
     let isMounted = true;
@@ -56,7 +59,7 @@ export function useFlashcardsForSelectedPlaylist() {
     return () => {
       isMounted = false;
     };
-  }, [selectedPlaylist]);
+  }, [selectedPlaylist, userID]);
 
 
   
