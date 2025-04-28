@@ -8,7 +8,7 @@ createFlashCardFunctions,
 editFlashCardFunctions, 
 deleteFlashCardFunctions, 
 getAllFlashCardFunctions, 
-getFlashCardByPlaylistIdFunctions,
+getFlashCardByArrayFunctions,
 updateFlashCardCountFunctions,
 updateFlashCardPriorityFunctions
 } from "./flashCardFunctions.js";
@@ -129,6 +129,48 @@ export const flashCardRouter = () => {
             return;
         }
     });
+
+    //Get flashcards by a array of IDs
+    router.post("/flashcardList/list", verifyRequest, async (req, res) => {
+        try {
+            // Get the list of flashcard IDs from request body
+            const flashcardIDList = req.body.list;
+
+            console.log("Get Flashcard List: ID ", flashcardIDList);
+
+            // Validate that it's a non-empty array
+            if (!Array.isArray(flashcardIDList) || flashcardIDList.length === 0) {
+                res.status(400).json({ message: "Invalid flashcard ID list" });
+                return;
+            }
+
+            // Map to extract only the id strings if array contains objects
+            const idList = flashcardIDList.map(item => typeof item === 'string' ? item : item.id);
+
+            // Fetch all flashcards by their IDs in a single database query
+            const flashCards = await Flashcard.find({ 
+                _id: { $in: idList } 
+            });
+
+            // Check if we found any cards
+            if (flashCards.length === 0) {
+                res.status(404).json({ message: "No flashcards found with the provided IDs" });
+                return;
+            }
+
+            // Result
+            let result = await getFlashCardByArrayFunctions(req, res, flashCards);
+
+            // Return status and message
+            res.status(result.status).json({ message: result.message, flashcards: result.flashCards });
+            return;
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: "Internal server error" });
+            return;
+        }
+    });
+
 
     // Update flashcard count
     

@@ -84,12 +84,18 @@ export const getAllFlashCardFunctions = async (
     return { status: 200,message: "Flashcard returned", data: returnObjects };
 }
 //Get flashcard by playlist id
-export const getFlashCardByPlaylistIdFunctions = async (
-  req: AuthRequest, 
-  res: Response
+export const getFlashCardByArrayFunctions = async (
+  req: Request, 
+  res: Response,
+  flashCards: IFlashcard[] | null[]
 ) => {
-    // No implementation, adding a return
-    return { status: 200, message: "Function not implemented" };
+    // Check if data exists
+    
+    if (!flashCards) {
+        return { status: 404, message: "Flashcard not found", flashCards: flashCards };
+    }
+
+    return { status: 200, message: "Flashcard returned", flashCards: flashCards };
 }
 
 //Update flashcard priority

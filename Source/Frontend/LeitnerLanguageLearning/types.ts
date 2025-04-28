@@ -114,8 +114,6 @@ export interface CustomButtonProps extends TouchableOpacityProps {
 export type FeedBackProps = {
   feedbackVisible: boolean;
   feedbackType: "correct" | "incorrect";
-  fadeAnim: Animated.Value;
-  scaleAnim: Animated.Value;
 }
 
 export type ImageUploadProps = {
@@ -173,9 +171,10 @@ export type WalletType = {
 
 export type PlaylistType = {
   _id: string;
+  userID: string;
   title: string;
-  user: string;
-  cardList?: string[]; // or any other type that describes the card list
+  cardList?: { id: string }[];
+  
 }
 
 export type ModalProps = {

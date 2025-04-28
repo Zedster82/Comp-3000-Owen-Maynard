@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { flashCardRouter } from "./routes/flashCard.js";
 import { playlistsRouter } from "./routes/playlists.js";
+import { authRouter } from "./routes/user/auth.js";
 
 
 import swStats from 'swagger-stats';
@@ -29,6 +30,7 @@ function buildApp(): express.Application {
     // Routes
     app.use("/api/flashcards", flashCardRouter().router);
     app.use("/api/playlists", playlistsRouter().router);
+    app.use("/api/auth", authRouter().router);
     console.log("Routes added");
 
     

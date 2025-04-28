@@ -19,15 +19,21 @@ import Typo from "@/components/Typo";
 import { colors } from "@/constants/theme";
 import { opacity } from "react-native-reanimated/lib/typescript/Colors";
 import Feedback from "@/components/Feedback";
+import { usePlaylists } from "@/hooks/usePlaylists";
+import { useFlashcardsForSelectedPlaylist } from "@/hooks/useFlashcards";
 
 const Homepage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const [flashcards, setFlashcards] = useState([
-    { question: "What is the capital of France?", answer: "Paris" },
-    { question: "What is 2 + 2?", answer: "4" },
-  ]);
+  // const [flashcards, setFlashcards] = useState([
+  //   { question: "What is the capital of France?", answer: "Paris" },
+  //   { question: "What is 2 + 2?", answer: "4" },
+  // ]);
+
+  const { flashcards, loading } = useFlashcardsForSelectedPlaylist()
+
+  
 
   const [feedbackVisible, setFeedbackVisible] = useState(false);
   const [feedbackType, setFeedbackType] = useState<"correct" | "incorrect">(
@@ -126,20 +132,45 @@ const Homepage = () => {
     }, 50);
   };
 
+
+  const { playlists } = usePlaylists();
+  const { selectedPlaylist, setSelectedPlaylist } = usePlaylists();
+
+  useEffect(() => {
+    // Optionally, set a default selected playlist if needed
+    if (!selectedPlaylist && playlists.length > 0) {
+      setSelectedPlaylist(playlists[0]);
+    }
+  }, [playlists]);
+
+  if (!selectedPlaylist || !flashcards || flashcards.length === 0) {
+    return (
+      <ScreenWrapper style={styles.fullDisplay}>
+        <Typo>Please Select A playlist</Typo>
+      </ScreenWrapper>
+    );
+  }
+
+
   return (
     <ScreenWrapper style={styles.fullDisplay}>
+      {/* <Typo fontWeight={"600"}>User ID: {selectedPlaylist.userID}</Typo> */}
+      <Typo fontWeight={"600"}>Selected Playlist: {selectedPlaylist.title}</Typo>
+      {/* <Typo fontWeight={"600"}>Selected Playlist ID: {selectedPlaylist._id}</Typo> */}
+      
+      
+
       <GestureHandlerRootView style={styles.fullDisplay}>
         <GestureDetector gesture={pan}>
           <Animated.View style={[styles.handlerCard, animatedStyles]}>
+            
             <FlashCard content={flashcards[currentIndex]}  isFlipped={isFlipped} setFlipped={setIsFlipped}  />
             {/* <FlashCard content={flashcards[1]} /> */}
           </Animated.View>
         </GestureDetector>
         <Feedback
           feedbackVisible={feedbackVisible}
-          feedbackType={feedbackType}
-          fadeAnim={fadeAnim}
-          scaleAnim={scaleAnim}/>
+          feedbackType={feedbackType}/>
       </GestureHandlerRootView>
       <View style={styles.resultsContainer}>
         <Typo>Correct: {results.correct}</Typo>

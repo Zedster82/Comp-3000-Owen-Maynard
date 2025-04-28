@@ -142,7 +142,10 @@ export const playlistsRouter = () => {
     router.put("/:id/cardList", verifyRequest, async (req, res) => {
         try {
             const playlistId = req.params.id;
-            const { cardList } = req.body;
+            const cardList = req.body.cardList; // Assuming cardList is sent in the request body
+
+            console.log("Replace CardList Playlist ID:", playlistId);
+            console.log("Replace CardList Data:", req.body);
             
             // Check if playlist exists
             const existingPlaylist = await Playlist.findById(playlistId);

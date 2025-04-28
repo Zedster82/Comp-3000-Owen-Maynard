@@ -13,6 +13,7 @@ export default function PlaylistsLayout() {
       <Stack.Screen 
         name="[id]" 
         options={{ 
+          title: 'View Playlist',
           headerShown: false,
         }} 
       />

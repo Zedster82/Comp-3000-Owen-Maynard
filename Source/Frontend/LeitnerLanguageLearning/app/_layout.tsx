@@ -1,5 +1,5 @@
 import { StyleSheet, Text, useColorScheme, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Tabs } from "expo-router";
 import {
   ThemeProvider,
@@ -7,7 +7,7 @@ import {
   DefaultTheme,
 } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-
+import { PlaylistsProvider } from "@/hooks/usePlaylists";
 import { Stack } from "expo-router";
 
 import {
@@ -30,33 +30,34 @@ const _layout = () => {
   const colorScheme = useColorScheme();
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Tabs
-          screenOptions={{
-            tabBarShowLabel: true,
-            tabBarButton: undefined,
-            tabBarActiveTintColor:
-              colorScheme === "dark" ? "#FFFFFF" : "#0066CC",
-            tabBarInactiveTintColor:
-              colorScheme === "dark" ? "#888888" : "#888888",
-            tabBarStyle: {
-              backgroundColor: colorScheme === "dark" ? "#121212" : "#FFFFFF",
-              height: 60,
-              
-              
-            },
-          }}
+      <PlaylistsProvider>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Tabs.Screen
-            name="Homepage"
-            options={{
-              title: "Home",
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="home" size={size} color={color} />
-              ),
+          <Tabs
+            screenOptions={{
+              tabBarShowLabel: true,
+              tabBarButton: undefined,
+              tabBarActiveTintColor:
+                colorScheme === "dark" ? "#FFFFFF" : "#0066CC",
+              tabBarInactiveTintColor:
+                colorScheme === "dark" ? "#888888" : "#888888",
+              tabBarStyle: {
+                backgroundColor: colorScheme === "dark" ? "#121212" : "#FFFFFF",
+                height: 60,
+              },
             }}
-          />
-          {/* <Tabs.Screen
+          >
+            <Tabs.Screen
+              name="Homepage"
+              options={{
+                title: "Home",
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="home" size={size} color={color} />
+                ),
+              }}
+            />
+            {/* <Tabs.Screen
           name="Homepage"
           options={{
             title: "Dashboard",
@@ -65,43 +66,58 @@ const _layout = () => {
             ),
           }}
         /> */}
-          <Tabs.Screen
-            name="Playlists"
-            options={{
-              title: "Playlists",
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="list" size={size} color={color} />
-              ),
-            }}
-          />
+            <Tabs.Screen
+              name="Playlists"
+              options={{
+                title: "Playlists",
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="list" size={size} color={color} />
+                ),
+              }}
+            />
 
-          <Tabs.Screen
-            name="index" // or any other route
-            options={{
-              href: null, // This prevents it from showing in the tab bar
-            }}
-          />
+            <Tabs.Screen
+              // or any other route
+              name="Flashcards"
+              options={{
+                title: "Flashcards",
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="card" size={size} color={color} />
+                ),
+              }}
+            />
 
-          <Tabs.Screen
-            name="(auth)/Login" // or any other route
-            options={{
-              href: null, // This prevents it from showing in the tab bar
-            }}
-          />
-          <Tabs.Screen
-            name="(auth)/Register" // or any other route
-            options={{
-              href: null, // This prevents it from showing in the tab bar
-            }}
-          />
-          <Tabs.Screen
-            name="playlists" // or any other route
-            options={{
-              href: null, // This prevents it from showing in the tab bar
-            }}
-          />
-        </Tabs>
-      </ThemeProvider>
+            <Tabs.Screen
+              name="index" // or any other route
+              options={{
+                href: null, // This prevents it from showing in the tab bar
+                tabBarStyle: { display: "none" }, //Hide the tab bar for this screen
+              }}
+            />
+
+            <Tabs.Screen
+              name="(auth)/Login" // or any other route
+              options={{
+                href: null, // This prevents it from showing in the tab bar
+                tabBarStyle: { display: "none" }, //Hide the tab bar for this screen
+              }}
+            />
+            <Tabs.Screen
+              name="(auth)/Register" // or any other route
+              options={{
+                href: null, // This prevents it from showing in the tab bar
+                tabBarStyle: { display: "none" }, //Hide the tab bar for this screen
+              }}
+            />
+            <Tabs.Screen
+              name="playlists" // or any other route
+              options={{
+                href: null, // This prevents it from showing in the tab bar
+              }}
+            />
+          </Tabs>
+        </ThemeProvider>
+      </PlaylistsProvider>
     </QueryClientProvider>
   );
 };
