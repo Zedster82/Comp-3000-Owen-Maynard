@@ -43,6 +43,7 @@ const AddCard = ({
 
   useEffect(() => {
     getUserIDAndFetchCards();
+    console.log("Visibility updated");
   }, [visible]);
 
   const handleAddCard = () => {};

@@ -187,6 +187,10 @@ export type ModalReturnProps = ModalProps & {
   returnHandler: (playlistName: string, description: string, cards: string[]) => void;
 };
 
+export type AddCardProps = ModalProps & {
+  returnHandler: (id: string) => void;
+};
+
 export type PlaylistProps = {
   id: string;
   playlistItem: PlaylistType;

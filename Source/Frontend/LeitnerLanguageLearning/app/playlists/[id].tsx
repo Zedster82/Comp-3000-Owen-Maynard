@@ -15,12 +15,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { Trash } from 'phosphor-react-native' // or wherever your Trash icon comes from
 import { useFlashcardsForSelectedPlaylist } from '@/hooks/useFlashcards'
+import { useFocusEffect } from '@react-navigation/native'
 
 
 const PlaylistDetailScreen = () => {
     const { id: playlistID } = useLocalSearchParams()
     const router = useRouter()
-    const { playlists, setPlaylists, selectedPlaylist, setSelectedPlaylist } = usePlaylists()
+    const { playlists, setPlaylists, selectedPlaylist, setSelectedPlaylist, refreshPlaylists } = usePlaylists()
     const { modalContent, setModalContent, modalVisible, setModalVisible } = useModalView()
     const [editMode, setEditMode] = useState(false)
     const [title, setTitle] = useState('')
@@ -34,7 +35,21 @@ const PlaylistDetailScreen = () => {
       setCardList([]); // Clear cardList when playlist changes
     }, [playlistID, playlists])
 
+    useFocusEffect(
+        React.useCallback(() => {
+            // Clear cardList and reload playlist data when the page is reopened
+            setCardList([]);
+            setPlaylistData(playlists.find(p => p._id === playlistID) || null);
+            setTitle(playlists.find(p => p._id === playlistID)?.title || '');
+        }, [playlistID, playlists])
+    );
+
     const updateCardList = async () => {
+      if (cardList.length > 0) {
+        console.log("Card list already populated:", cardList);
+        return;
+      }
+      
       if (playlistData && playlistData.cardList && playlistData.cardList.length > 0) {
         try {
           console.log("Getting list:", playlistData)
@@ -57,20 +72,8 @@ const PlaylistDetailScreen = () => {
     };
 
     useEffect(() => {
-      let isMounted = true;
-      
-      const fetchData = async () => {
-        if (isMounted) {
-          await updateCardList();
-        }
-      };
-      
-      fetchData();
-      
-      return () => {
-        isMounted = false;
-      };
-    }, [playlistData])
+      updateCardList();
+    }, [cardList, playlistData]);
 
     const handleSave = () => {
       setEditMode(false)
@@ -106,12 +109,19 @@ const PlaylistDetailScreen = () => {
         // Fetch updated playlist from backend
         const updatedPlaylistRes = await axios.get(`http://localhost:8282/api/playlists/${playlistID}`);
         setPlaylistData(updatedPlaylistRes.data);
+        refreshPlaylists(); // Refresh the playlists in context
       } catch (error) {
         console.error('Error updating playlist card list:', error);
         Alert.alert('Error', 'Failed to update card list');
       }
 
       setModalVisible(false)
+
+      // Add card to playlistData
+      setCardList([]); // Clear cardList when adding a new card to refresh
+
+
+    
     }
 
     const handleAddCard = () => {
@@ -126,6 +136,16 @@ const PlaylistDetailScreen = () => {
 
       const payload = { cardList: updatedCardList };
 
+      // Update playlistData 
+      setPlaylistData(prev => {
+        if (prev === null) return null;
+        return {
+          ...prev,
+          cardList: updatedCardList
+        };
+      });
+      refreshPlaylists();
+
       try {
         await axios.put(
           `http://localhost:8282/api/playlists/${playlistID}/cardList`,
@@ -134,7 +154,7 @@ const PlaylistDetailScreen = () => {
         );
         // Update local state after successful delete
         setCardList(cardList.filter(card => (card.id || card._id) !== cardIdToDelete));
-        setFlashcards(updatedCardList);
+        setFlashcards(updatedCardList); // Update flashcards if necessary
       } catch (error) {
         console.error('Error deleting card from playlist:', error);
         Alert.alert('Error', 'Failed to delete card');
